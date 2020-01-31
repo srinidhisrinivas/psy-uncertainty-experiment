@@ -119,6 +119,7 @@ class SquareGrid{
 				var fRatio = (maxVal - val) / maxVal;
 				//alert(fRatio);
 				var color = rygbColorMap.getColor(fRatio).rgb();
+				//alert(color);
 				div.style['box-sizing'] = "border-box";
 				div.style.border = "2px solid grey";
 				div.style['background-color'] = color;
@@ -126,7 +127,7 @@ class SquareGrid{
 			colorDiv(div, maxVal);
 		
 		});
-		//this.clickButton(button);
+		this.clickButton(button);
 		
 		return button;
 

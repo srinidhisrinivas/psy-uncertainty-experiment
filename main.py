@@ -21,14 +21,20 @@ def index():
 
 @app.route('/trial/<trial_num>')
 def render_trial(trial_num):
+
 	return render_template('layouts/grid.html',
 		trial_num = trial_num, 
-		scripts = [
+		static_scripts = [
 			{'src': url_for('static', filename='js/jpalette.min.js')}, 
 			{'src': url_for('static', filename='js/main.js')},
 			{'src': url_for('static', filename='js/colors.js')},
 			{'src': url_for('static', filename='js/grid.js')},
-			{'src': 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'} ]);
+			{'src': 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'} ],
+		template_scripts = [
+			{'src': "js/main.js"} ],
+		grid_values = get_val_dict(8),
+		enabled_buttons = [(3,7),(1,5), (6,2)],
+		clicked_buttons = [(1,2), (4,4)]);
 
 @app.route('/postmethod', methods = ['POST'])
 def get_post_javascript_data():
@@ -44,23 +50,29 @@ def get_cell_val(idx, idy):
 	val = abs(float('%.1f'%(np.sin(idx * idy))));
 	val = idx*idy;
 
-	grid = np.linspace(-600, 600, 10000);
+	grid = np.linspace(-5, 5, 10000);
 	x = vec_to_buck(grid, 8, idx);
 	y = vec_to_buck(grid, 8, idy);
 	xx, yy = np.meshgrid(x, y);
 
 	z = griewank(xx,yy);
 	val = abs(int(np.mean(z)));
-	
+	val = abs(float('%.1f'%(np.mean(z))))
 	return val;
 
-def get_val_dict(num_cells, targets):
+def get_val_dict(num_cells):
+	if os.path.isfile('valdict.json'):
+		with open('valdict.json', 'r') as f_in:
+			return json.load(f_in);
+
 	val_dict = {}
 	for i in range(num_cells):
 		for j in range(num_cells):
 			idx = str(i)+','+str(j);
-			if idx in targets:
-				val_dict[idx] = get_cell_val(i, j);
+			val_dict[idx] = get_cell_val(i, j);
+
+	with open('valdict.json', 'w') as f_out:
+		f_out.write(json.dumps(val_dict));
 
 	return val_dict;
 
