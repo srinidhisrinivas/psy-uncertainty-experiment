@@ -1,0 +1,11 @@
+div#trialTitle{
+	position: fixed;
+	font-family: "Cambria";
+	font-weight: 500;
+	font-size: 34pt;
+	left: 50%;
+	text-align: left;
+	top: 15%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
