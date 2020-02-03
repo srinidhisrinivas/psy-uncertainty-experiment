@@ -8,8 +8,9 @@ function onWindowLoad(){
 	var gridVals = {{ grid_values|tojson }};
 	var clickedButtons = {{ clicked_buttons|tojson }};
 	var enabledButtons = {{ enabled_buttons|tojson }};
+	var gridEnabled = (enabledButtons === "ALL"); 
 	
-	grid.setButtons(gridVals);
+	grid.setButtons(gridVals, gridEnabled);
 	for(var i = 0; i<enabledButtons.length; i++){
 		grid.enableButtonByID(enabledButtons[i][0], enabledButtons[i][1])
 	}

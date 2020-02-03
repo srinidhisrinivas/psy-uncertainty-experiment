@@ -5,7 +5,19 @@ div#titleText{
 	font-size: 34pt;
 	left: 50%;
 	text-align: left;
-	top: 5%;
+	top: 10%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+div#instructionText{
+	position: fixed;
+	font-family: "Cambria";
+	font-weight: 300;
+	font-size: 18pt;
+	left: 50%;
+	text-align: left;
+	top: 25%;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }
@@ -16,7 +28,7 @@ div#startDiv{
 	font-size: 34pt;
 	left: 50%;
 	text-align: left;
-	top: 70%;
+	top: 80%;
 	background-color: orange;
 	width: 200px;
 	height: 60px;

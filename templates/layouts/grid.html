@@ -12,14 +12,14 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css') }}">
 {% endblock %}
 {% block content %}
-	<div id="trialTitle"> Trial #{{ trial_num }} </div>
-		<div id="gridlayer" style="position: fixed;
-		    top: 50%;
-		    left: 50%;
-		    -webkit-transform: translate(-50%, -50%);
-		    transform: translate(-50%, -50%);"
+{% set next_trial_num = trial_num + 1 %}
+	<div id="trialTitle"> {{ title_text }} #{{ trial_num }} </div>
+		<div id="gridlayer" 
 		    onselectstart = "return false">
 	<canvas id="myCanvas" style="fill: 'white'; border: solid black 1px;">
 	 </canvas>
 	</div>
+	<div id="buttonDiv">
+			<button id="continueButton" onclick="location.href = '/{{ trial_type }}/{{ next_trial_num }}'"> Continue </button> 
+		</div>
 {% endblock %}
