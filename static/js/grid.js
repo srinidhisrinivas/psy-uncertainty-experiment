@@ -69,8 +69,7 @@ class SquareGrid{
 	}
 	
 
-	//registerD
-	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal){
+	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled){
 
 		var button = document.createElement('button');
 		button.setAttribute('class', 'unmoused');
@@ -90,10 +89,10 @@ class SquareGrid{
 		button.style.border = "2px solid grey";
 		button.style.outline = "none";
 
-		this.disableButton(button);
-		//this.enableButton(button);
-
-
+		if(!gridEnabled){
+			this.disableButton(button);
+		}
+		
 		button.addEventListener('mouseover', function(e){
 			e.target.setAttribute('class', 'moused');
 			e.target.style['background-color'] = "#FF0000";
@@ -108,6 +107,7 @@ class SquareGrid{
 		});
 		button.addEventListener('click', function(e){
 			//alert(gridVals);
+			
 			e.target.style.visibility = "hidden";
 
 			var div = document.getElementById("div"+idx+","+idy);
@@ -119,6 +119,7 @@ class SquareGrid{
 				var fRatio = (maxVal - val) / maxVal;
 				//alert(fRatio);
 				var color = rygbColorMap.getColor(fRatio).rgb();
+				//alert(color);
 				div.style['box-sizing'] = "border-box";
 				div.style.border = "2px solid grey";
 				div.style['background-color'] = color;
@@ -155,7 +156,7 @@ class SquareGrid{
 		return button;
 	}
 
-	setButtons(gridVals){
+	setButtons(gridVals, gridEnabled){
 
 		var rect = this.canvas.getBoundingClientRect();
 		var gridL = rect.left + this.p + 3;
@@ -171,7 +172,7 @@ class SquareGrid{
 				
 				body.appendChild(this.createDiv(gridL, gridT, idx, idy, step));
 
-				body.appendChild(this.createButton(gridL, gridT, idx, idy, step, gridVals,maxVal));
+				body.appendChild(this.createButton(gridL, gridT, idx, idy, step, gridVals,maxVal, gridEnabled));
 			}			
 			
 		}
