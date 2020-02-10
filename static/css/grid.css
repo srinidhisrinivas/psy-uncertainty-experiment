@@ -9,8 +9,10 @@ div#trialTitle{
 	font-weight: 500;
 	font-size: 34pt;
 	text-align: left;
-	
-	background-color: blue;
+	left: 50%;
+	top: 10%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
 div#flexContainer{
 	display:flex;
@@ -46,11 +48,14 @@ div#gridFlex{
 }
 div#gridLayer{
 	position: fixed;
+	
+}
+canvas#myCanvas{
+	position: fixed;
 	left: 50%;
 	top: 50%;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-    
 }
 #continueButton{
 	width: 100%;
@@ -64,14 +69,17 @@ div#gridLayer{
 	background-color: #800000;
 }
 div#buttonDiv{
-	
+	position: fixed;
 	font-family: "Cambria";
 	font-weight: 500;
 	font-size: 34pt;
 	text-align: left;
-	background-color: orange;
 	width: 200px;
 	height: 60px;
+	left: 50%;
+	top: 90%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 	
 	
 }

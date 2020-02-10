@@ -29,7 +29,6 @@ div#startDiv{
 	left: 50%;
 	text-align: left;
 	top: 80%;
-	background-color: orange;
 	width: 200px;
 	height: 60px;
 	-webkit-transform: translate(-50%, -50%);
