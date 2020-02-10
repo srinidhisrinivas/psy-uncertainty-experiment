@@ -3,6 +3,7 @@ import os
 import math
 import numpy as np
 import json
+import random
 
 app = Flask(__name__);
 app._static_folder_ = os.path.abspath('templates/static');
@@ -20,17 +21,18 @@ def dir_last_updated(folder):
 @app.route('/')
 @app.route('/index')
 def index():
-	
+	pid = random.randint(0, 1000);
+	print('/%d/train/1'%(pid));
 	instructions = 'instructions';
 	return render_template('layouts/index.html',
 		page_title = 'Experiment Name',
 		body_text = instructions,
-		button_dest = '/train/1',
+		button_dest = '/%d/train/1'%(pid),
 		button_text = 'Begin Training'
 		);
 
-@app.route('/end')
-def render_end():
+@app.route('/<int:pid>/end')
+def render_end(pid):
 	instructions = 'thank you for participating owo';
 	return render_template('layouts/index.html',
 		page_title = 'End',
@@ -39,10 +41,10 @@ def render_end():
 		button_text = 'Restart'
 		);
 
-@app.route('/trial/<trial_num>')
-def render_trial(trial_num):
+@app.route('/<int:pid>/trial/<trial_num>')
+def render_trial(trial_num, pid):
 	if int(trial_num) > NUM_TRIAL:
-		return redirect('/end');
+		return redirect('/%d/end'%(pid));
 
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
@@ -57,23 +59,23 @@ def render_trial(trial_num):
 		enabled_buttons = [(3,7),(1,5), (6,2)],
 		clicked_buttons = [(1,2), (4,4)],
 		title_text = 'Trial',
-		trial_type = 'trial');
+		trial_type = 'trial', 
+		pid = pid);
 
-@app.route('/trialbegin')
-def render_trialbegin():
+@app.route('/<int:pid>/trialbegin')
+def render_trialbegin(pid):
 	instructions = 'instructions before trial begins';
 	return render_template('layouts/index.html',
 		page_title = 'Training Phase Complete',
 		body_text = instructions,
-		button_dest = '/trial/1',
+		button_dest = '/%d/trial/1'%(pid),
 		button_text = 'Begin Trials'
 		);
 
-@app.route('/train/<trial_num>')
-def render_train(trial_num):
-
+@app.route('/<int:pid>/train/<trial_num>')
+def render_train(trial_num, pid):
 	if int(trial_num) > NUM_TRAIN:
-		return redirect('/trialbegin');
+		return redirect('/%d/trialbegin'%(pid));
 
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
@@ -88,8 +90,9 @@ def render_train(trial_num):
 		enabled_buttons = "ALL",
 		clicked_buttons = [],
 		title_text = 'Training Phase',
-		trial_type = 'train');
-
+		trial_type = 'train',
+		pid = pid);
+"""
 @app.route('/postmethod', methods = ['POST'])
 def get_post_javascript_data():
     jsdata = request.form['javascript_data'];
@@ -99,6 +102,16 @@ def get_post_javascript_data():
     print(targets);
 
     return jsonify(get_val_dict(id_['numCells'], targets));
+"""
+@app.route('/postmethod', methods = ['POST'])
+def get_post_javascript_data():
+    jsdata = request.form['javascript_data'];
+
+    click_data = json.loads(jsdata);
+    
+    print(click_data);
+
+    return "0";
 
 def get_cell_val(idx, idy):
 	val = abs(float('%.1f'%(np.sin(idx * idy))));

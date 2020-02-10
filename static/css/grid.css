@@ -1,20 +1,56 @@
+html, body{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
 div#trialTitle{
 	position: fixed;
 	font-family: "Cambria";
 	font-weight: 500;
 	font-size: 34pt;
-	left: 50%;
 	text-align: left;
-	top: 10%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+	
+	background-color: blue;
+}
+div#flexContainer{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+}
+div#titleFlex{
+	background-color: blue;
+	flex-grow: 1;
+	width:100%;
+	align-items: center;
+	justify-content: center;
+	
+}
+div#buttonFlex{
+	background-color: red;
+	flex-grow: 1;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+
+}
+div#gridFlex{
+	background-color: yellow;
+	flex-grow: 4;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+
 }
 div#gridLayer{
 	position: fixed;
-		    top: 44%;
-		    left: 50%;
-		    -webkit-transform: translate(-50%, -50%);
-		    transform: translate(-50%, -50%);
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+    
 }
 #continueButton{
 	width: 100%;
@@ -22,21 +58,20 @@ div#gridLayer{
 	background-color: #AF0000;
 	color: white;
 	font-family: "Consolas";
+
 }
 #continueButton:hover{
 	background-color: #800000;
 }
 div#buttonDiv{
-	position: fixed;
+	
 	font-family: "Cambria";
 	font-weight: 500;
 	font-size: 34pt;
-	left: 50%;
 	text-align: left;
-	top: 80%;
 	background-color: orange;
 	width: 200px;
 	height: 60px;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+	
+	
 }
