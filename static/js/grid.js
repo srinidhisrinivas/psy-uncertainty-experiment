@@ -1,7 +1,7 @@
 
 //grid width and height
 class SquareGrid{
-	constructor(canvas, h, numCells, p){
+	constructor(canvas, h, numCells, p, trialData){
 		if(h===undefined){
 			h = 400;
 		}
@@ -19,7 +19,7 @@ class SquareGrid{
 		this.numCells = numCells;
 		this.canvas.height = h;
 		this.canvas.width = h;
-		
+		this.trialData = trialData;
 
 	}
 	
@@ -69,7 +69,7 @@ class SquareGrid{
 	}
 	
 
-	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled){
+	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled, trialData){
 
 		var button = document.createElement('button');
 		button.setAttribute('class', 'unmoused');
@@ -107,10 +107,18 @@ class SquareGrid{
 		});
 		button.addEventListener('click', function(e){
 			//alert(gridVals);
-			
+			var clickData = {trialData: trialData, buttonClick: e.target.id, realClick: e.isTrusted};
+			$.post("/postmethod", {
+				javascript_data: JSON.stringify(clickData)
+			});
 			e.target.style.visibility = "hidden";
 
 			var div = document.getElementById("div"+idx+","+idy);
+			
+			if(trialData['type'] === 'trial' && clickData.realClick){
+				location.href = '/'+trialData.pid+'/'+trialData['type']+'/'+(trialData.num+1);
+				return 0;
+			}
 			
 			
 			function colorDiv(div, maxVal){
@@ -172,7 +180,7 @@ class SquareGrid{
 				
 				body.appendChild(this.createDiv(gridL, gridT, idx, idy, step));
 
-				body.appendChild(this.createButton(gridL, gridT, idx, idy, step, gridVals,maxVal, gridEnabled));
+				body.appendChild(this.createButton(gridL, gridT, idx, idy, step, gridVals,maxVal, gridEnabled, this.trialData));
 			}			
 			
 		}
