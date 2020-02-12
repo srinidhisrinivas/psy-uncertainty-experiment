@@ -13,6 +13,18 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 NUM_TRAIN = 5;
 NUM_TRIAL = 5;
 
+gridpoints = []
+for i in range(8):
+	for j in range(8):
+		gridpoints.append((i,j));
+def get_rand_gridpoints_list(size=3):
+	res = [];
+	idx = np.random.randint(0, 64,size);
+	for id_ in idx:
+		res.append(gridpoints[id_]);
+
+	return res;
+
 def dir_last_updated(folder):
     return str(max(os.path.getmtime(os.path.join(root_path, f))
                for root_path, dirs, files in os.walk(folder)
@@ -45,7 +57,8 @@ def render_end(pid):
 def render_trial(trial_num, pid):
 	if int(trial_num) > NUM_TRIAL:
 		return redirect('/%d/end'%(pid));
-
+	enabled_buttons = get_rand_gridpoints_list(3);
+	clicked_buttons = get_rand_gridpoints_list(4);
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [
@@ -56,8 +69,8 @@ def render_trial(trial_num, pid):
 		template_scripts = [
 			{'src': "js/main.js"} ],
 		grid_values = get_val_dict(8),
-		enabled_buttons = [(3,7),(1,5), (6,2)],
-		clicked_buttons = [(1,2), (4,4)],
+		enabled_buttons = enabled_buttons,
+		clicked_buttons = clicked_buttons,
 		title_text = 'Trial',
 		trial_type = 'trial', 
 		pid = pid);
@@ -77,6 +90,8 @@ def render_train(trial_num, pid):
 	if int(trial_num) > NUM_TRAIN:
 		return redirect('/%d/trialbegin'%(pid));
 
+	enabled_buttons = get_rand_gridpoints_list(3);
+	clicked_buttons = get_rand_gridpoints_list(4);
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [
@@ -87,8 +102,8 @@ def render_train(trial_num, pid):
 		template_scripts = [
 			{'src': "js/main.js"} ],
 		grid_values = get_val_dict(8),
-		enabled_buttons = "ALL",
-		clicked_buttons = [],
+		enabled_buttons = enabled_buttons,
+		clicked_buttons = clicked_buttons,
 		title_text = 'Training Phase',
 		trial_type = 'train',
 		pid = pid);

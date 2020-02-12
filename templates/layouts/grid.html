@@ -25,7 +25,7 @@
 
 		<div id="buttonDiv">
 			{% if trial_type == 'train' %}
-			<button id="continueButton" onclick="location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Continue </button> 
+			<button hidden=true id="continueButton" onclick="location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Continue </button> 
 			{% endif %}
 		</div>
 

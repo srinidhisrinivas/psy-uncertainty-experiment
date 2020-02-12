@@ -62,6 +62,7 @@ class SquareGrid{
 		button.style['background-color'] = "white";
 		button.style.border = "2px solid grey";
 		button.disabled = false;
+		//button.hidden = true;
 	}
 	enableButtonByID(idx, idy){
 		var button = document.getElementById(idx+","+idy);
@@ -118,6 +119,10 @@ class SquareGrid{
 			if(trialData['type'] === 'trial' && clickData.realClick){
 				location.href = '/'+trialData.pid+'/'+trialData['type']+'/'+(trialData.num+1);
 				return 0;
+			}
+			if(clickData.realClick){
+				var continueButton = document.getElementById('continueButton');
+				continueButton.hidden = false;
 			}
 			
 			

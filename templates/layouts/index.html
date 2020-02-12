@@ -6,9 +6,9 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 {% endblock %}
 {% block content %}
-		<div id="titleText">{{ page_title }}</div>
-		<div id="instructionText"> {{ body_text }} </div>
-		<div id="startDiv">
+		<div id="titleText" onselectstart='return false'>{{ page_title }}</div>
+		<div id="instructionText" onselectstart='return false'> {{ body_text }} </div>
+		<div id="startDiv" onselectstart='return false'>
 			<button id="startButton" onclick="location.href = '{{ button_dest }}'"> {{ button_text }} </button> 
 		</div>
 {% endblock %}
