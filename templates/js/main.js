@@ -11,16 +11,17 @@ function onWindowLoad(){
  		pid: pid
  	};
 
-	var grid = new SquareGrid(c, 400, 8, 5, trialData);
+	
 	
 	var gridVals = {{ grid_values|tojson }};
 	var clickedButtons = {{ clicked_buttons|tojson }};
 	var enabledButtons = {{ enabled_buttons|tojson }};
 	var gridEnabled = (enabledButtons === "ALL"); 
 
+	var grid = new SquareGrid(c, 400, 8, 5, trialData, enabledButtons.length);
 	grid.setButtons(gridVals, gridEnabled);
 	for(var i = 0; i<enabledButtons.length; i++){
-		grid.enableButtonByID(enabledButtons[i][0], enabledButtons[i][1])
+		grid.enableButtonInputByID(enabledButtons[i][0], enabledButtons[i][1])
 	}
 	for(var i = 0; i<clickedButtons.length; i++){
 		grid.clickButtonByID(clickedButtons[i][0], clickedButtons[i][1])

@@ -138,8 +138,8 @@ def get_cell_val(idx, idy):
 	xx, yy = np.meshgrid(x, y);
 
 	z = griewank(xx,yy);
-	val = abs(int(np.mean(z)));
-	val = abs(float('%.1f'%(np.mean(z))))
+	val = abs(int(55*np.mean(z)));
+	#val = abs(float('%.1f'%(np.mean(z))))
 	return val;
 
 def get_val_dict(num_cells):
@@ -156,6 +156,9 @@ def get_val_dict(num_cells):
 	with open('valdict.json', 'w') as f_out:
 		f_out.write(json.dumps(val_dict));
 
+	print(max(val_dict.values()));
+	print(min(val_dict.values()));
+	print('\n');
 	return val_dict;
 
 def vec_to_buck(vec, nbucks, buckid):

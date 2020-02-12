@@ -1,7 +1,7 @@
 
 //grid width and height
 class SquareGrid{
-	constructor(canvas, h, numCells, p, trialData){
+	constructor(canvas, h, numCells, p, trialData, numEnabled){
 		if(h===undefined){
 			h = 400;
 		}
@@ -20,7 +20,8 @@ class SquareGrid{
 		this.canvas.height = h;
 		this.canvas.width = h;
 		this.trialData = trialData;
-
+		this.numEnabled = numEnabled;
+		this.maxVal = 0;
 	}
 	
 	draw(){
@@ -62,11 +63,84 @@ class SquareGrid{
 		button.style['background-color'] = "white";
 		button.style.border = "2px solid grey";
 		button.disabled = false;
-		//button.hidden = true;
 	}
 	enableButtonByID(idx, idy){
 		var button = document.getElementById(idx+","+idy);
 		this.enableButton(button);
+	}
+	enableButtonInputByID(idx, idy){
+		var button = document.getElementById(idx+","+idy);
+		this.enableButtonInput(button);		
+	}
+	enableButtonInput(button){
+		button.hidden = true;
+		var buttonRect = button.getBoundingClientRect();
+		var inp = document.createElement('input');
+		inp.id = 'input'+button.id;
+		inp.type = 'number';
+		inp.min = '0';
+		inp.max = '99';
+		inp.maxlength = 2;
+		inp.style.position = "absolute";
+		inp.style.left = button.style.left;
+		inp.style.top = button.style.top;
+
+		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
+		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
+		var inpWidth = buttonWidth - 4;
+		var inpHeight = buttonHeight - 6;
+		
+		inp.style.width = inpWidth + 'px';
+		inp.style.height = inpHeight + 'px';
+
+		inp.style.background = 'transparent';
+		inp.style.border = '2px solid black';
+
+		inp.style['font-family'] = "Bahnschrift";
+
+		inp.style['font-weight'] = 350;
+		inp.style['font-size'] = 18+"pt";
+		inp.style['text-align'] = "center";
+		
+		inp.style['vertical-align'] =  'middle';
+		
+		var body = document.getElementById('content');
+
+		body.appendChild(inp);
+
+		function colorDiv(div, currentVal, maxVal){
+			if(currentVal === ''){
+				div.style['background-color'] = '#FFFF9E';
+			} else {
+				var val = parseFloat(currentVal);
+				var fRatio = (maxVal - val) / maxVal;
+				
+				var color = rygbColorMap.getColor(fRatio).rgb();
+				//alert(color);
+				
+				div.style['background-color'] = color;
+			}
+		}
+		var maxVal = this.maxVal;
+		
+		inp.addEventListener('input', function(e){
+			e.target.value = e.target.value.replace(/[^0-9]*/g,'');
+			var idx = e.target.id.substring(e.target.id.search('[0-9]'));
+			var divIdx = "div" + idx;
+			if (!e.target.value || isNaN(e.target.value)){
+				e.target.value = '';
+			}
+			var div = document.getElementById(divIdx);
+			if ((""+e.target.value).length > 2){
+				e.target.value = e.target.value.slice(0, 2);	
+			} 
+			if ((""+e.target.value).includes(".")){
+				alert('here');
+				e.target.value = e.target.value.slice(0,-1);
+			}
+			colorDiv(div, e.target.value, maxVal);
+
+		})
 	}
 	
 
@@ -179,6 +253,7 @@ class SquareGrid{
 		var body = document.getElementById("content");
 		var arr = Object.values(gridVals);
 		var maxVal = Math.max(...arr);
+		this.maxVal = maxVal;
 
 		for(var idx = 0; idx < this.numCells; idx++){
 			for(var idy = 0; idy < this.numCells; idy++){
