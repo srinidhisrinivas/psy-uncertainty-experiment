@@ -13,6 +13,22 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 NUM_TRAIN = 5;
 NUM_TRIAL = 5;
 
+gridpoints = []
+clicked_buttons = [];
+enabled_buttons = [];
+input_enabled_buttons = [];
+
+for i in range(8):
+	for j in range(8):
+		gridpoints.append((i,j));
+def get_rand_gridpoints_list(size=3):
+	res = [];
+	idx = np.random.randint(0, 64,size);
+	for id_ in idx:
+		res.append(gridpoints[id_]);
+
+	return res;
+
 def dir_last_updated(folder):
     return str(max(os.path.getmtime(os.path.join(root_path, f))
                for root_path, dirs, files in os.walk(folder)
@@ -45,7 +61,8 @@ def render_end(pid):
 def render_trial(trial_num, pid):
 	if int(trial_num) > NUM_TRIAL:
 		return redirect('/%d/end'%(pid));
-
+	enabled_buttons = get_rand_gridpoints_list(3);
+	clicked_buttons = get_rand_gridpoints_list(4);
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [
@@ -56,8 +73,8 @@ def render_trial(trial_num, pid):
 		template_scripts = [
 			{'src': "js/main.js"} ],
 		grid_values = get_val_dict(8),
-		enabled_buttons = [(3,7),(1,5), (6,2)],
-		clicked_buttons = [(1,2), (4,4)],
+		enabled_buttons = enabled_buttons,
+		clicked_buttons = clicked_buttons,
 		title_text = 'Trial',
 		trial_type = 'trial', 
 		pid = pid);
@@ -77,6 +94,8 @@ def render_train(trial_num, pid):
 	if int(trial_num) > NUM_TRAIN:
 		return redirect('/%d/trialbegin'%(pid));
 
+	enabled_buttons = get_rand_gridpoints_list(3);
+	clicked_buttons = get_rand_gridpoints_list(4);
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [
@@ -87,8 +106,8 @@ def render_train(trial_num, pid):
 		template_scripts = [
 			{'src': "js/main.js"} ],
 		grid_values = get_val_dict(8),
-		enabled_buttons = "ALL",
-		clicked_buttons = [],
+		enabled_buttons = enabled_buttons,
+		clicked_buttons = clicked_buttons,
 		title_text = 'Training Phase',
 		trial_type = 'train',
 		pid = pid);
@@ -109,7 +128,7 @@ def get_post_javascript_data():
 
     click_data = json.loads(jsdata);
     
-    print(click_data);
+    print("\n{}\n".format(click_data));
 
     return "0";
 
@@ -123,8 +142,8 @@ def get_cell_val(idx, idy):
 	xx, yy = np.meshgrid(x, y);
 
 	z = griewank(xx,yy);
-	val = abs(int(np.mean(z)));
-	val = abs(float('%.1f'%(np.mean(z))))
+	val = abs(int(55*np.mean(z)));
+	#val = abs(float('%.1f'%(np.mean(z))))
 	return val;
 
 def get_val_dict(num_cells):
@@ -141,6 +160,9 @@ def get_val_dict(num_cells):
 	with open('valdict.json', 'w') as f_out:
 		f_out.write(json.dumps(val_dict));
 
+	print(max(val_dict.values()));
+	print(min(val_dict.values()));
+	print('\n');
 	return val_dict;
 
 def vec_to_buck(vec, nbucks, buckid):
