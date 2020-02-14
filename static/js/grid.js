@@ -20,9 +20,11 @@ class SquareGrid{
 		this.canvas.width = h;
 		this.trialData = trialData;
 		this.inputsValid = {};
+		this.inputsSelected = {};
 
 		for(var i = 0; i < inputEnabledButtons.length; i++){
 			this.inputsValid[inputEnabledButtons[i][0] + ',' + inputEnabledButtons[i][1]] = 0;
+			this.inputsSelected[inputEnabledButtons[i][0] + ',' + inputEnabledButtons[i][1]] = 0;
 		}
 		this.maxVal = 0;
 	}
@@ -81,11 +83,34 @@ class SquareGrid{
 	hideInput(input){
 		input.hidden = true;
 	}
+	lockInputByID(idx, idy){
+		var input = document.getElementById('input'+''+idx+","+idy);
+		this.lockInput(input)
+	}
+	lockInput(input){
+		var id_ = input.id.substring(input.id.search('[0-9]'));
+		input.readOnly = true;
+		var inputsSelected = this.inputsSelected;
+		input.addEventListener('click', function(e){
+			inputsSelected[id_] = 1 - inputsSelected[id_];
+			if(inputsSelected[id_] === 1){
+				input.style.border = '3px solid #66ff00';
+			} else {
+				input.style.border = '2px solid black';
+			}
+			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) == 1){
+				document.getElementById('nextButton').hidden = false;
+			} else {
+				document.getElementById('nextButton').hidden = true;
+			}
+		})
+		
+	}
 	reportInputByID(idx, idy){
 		var input = document.getElementById('input'+''+idx+","+idy);
-		var clickData = {trialData: this.trialData, action: 'input', value: input.value, targetID: input.id, userGenerated: true};
+		var inputData = {trialData: this.trialData, action: 'input', value: input.value, targetID: input.id, userGenerated: true};
 		$.post("/postmethod", {
-			javascript_data: JSON.stringify(clickData)
+			javascript_data: JSON.stringify(inputData)
 		});
 	}
 	giveFeedback(idx, idy){

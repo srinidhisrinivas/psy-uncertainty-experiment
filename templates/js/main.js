@@ -1,5 +1,5 @@
 function onWindowLoad(){
-	
+	trialStartTime = Date.now();
 	var c = document.getElementById('myCanvas');
 	var ctx = c.getContext('2d');
  	var trialNum = {{ trial_num }};
@@ -30,13 +30,36 @@ function onWindowLoad(){
 		grid.clickButtonByID(clickedButtons[i][0], clickedButtons[i][1])
 	}
 	var continueButton = document.getElementById('continueButton');
+	if(trialType == 'trial'){
+		var nextButton = document.getElementById('nextButton');
+		nextButton.addEventListener('click', function(e){
+			var selectedIdx = "0,0";
+
+			for(var i=0; i<enabledButtons.length; i++){
+				idx = enabledButtons[i][0]+','+ enabledButtons[i][1];
+				if(grid.inputsSelected[idx] === 1){
+					selectedIdx = idx;
+				}
+			}
+			var inputData = {trialData: trialData, action: 'select', value: document.getElementById('input'+idx).value, targetID: idx, userGenerated: true};
+			$.post("/postmethod", {
+				javascript_data: JSON.stringify(inputData)
+			});
+		})
+	}
 	continueButton.addEventListener('click', function(e){
 		var button = e.target;
 		for(var i = 0; i<enabledButtons.length; i++){
-			grid.clickButtonByID(enabledButtons[i][0], enabledButtons[i][1]);
+			
 			grid.reportInputByID(enabledButtons[i][0], enabledButtons[i][1]);
-			grid.hideInputByID(enabledButtons[i][0], enabledButtons[i][1]);
-			grid.giveFeedback(enabledButtons[i][0], enabledButtons[i][1]);
+			if(trialType === 'train'){
+				grid.clickButtonByID(enabledButtons[i][0], enabledButtons[i][1]);
+				grid.hideInputByID(enabledButtons[i][0], enabledButtons[i][1]);
+				grid.giveFeedback(enabledButtons[i][0], enabledButtons[i][1]);
+			} else {
+				grid.lockInputByID(enabledButtons[i][0], enabledButtons[i][1]);
+			}
+			
 		}
 		continueButton.hidden = true;
 		document.getElementById('nextButton').hidden = false;
