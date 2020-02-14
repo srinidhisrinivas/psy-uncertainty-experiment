@@ -57,7 +57,7 @@ canvas#myCanvas{
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }
-#continueButton{
+#continueButton, #nextButton{
 	width: 100%;
 	height: 100%;
 	background-color: #AF0000;
@@ -68,6 +68,16 @@ canvas#myCanvas{
 #continueButton:hover{
 	background-color: #800000;
 }
+#nextButton:hover{
+	background-color: #800000;
+}
+#feedbackBox{
+	background-color: white;
+	font-family: 'Bahnschrift';
+	font-size: 16pt;
+	border: 2px solid black;
+}
+
 div#buttonDiv{
 	position: fixed;
 	font-family: "Cambria";

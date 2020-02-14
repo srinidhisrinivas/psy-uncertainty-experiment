@@ -1,7 +1,7 @@
 
 //grid width and height
 class SquareGrid{
-	constructor(canvas, h, numCells, p, trialData, numEnabled){
+	constructor(canvas, h, numCells, p, trialData, inputEnabledButtons){
 		if(h===undefined){
 			h = 400;
 		}
@@ -12,7 +12,6 @@ class SquareGrid{
 			p = 5;
 		}
 		this.canvas = canvas;
-
 		this.h = h;
 		this.w = h;
 		this.p = p;
@@ -20,10 +19,13 @@ class SquareGrid{
 		this.canvas.height = h;
 		this.canvas.width = h;
 		this.trialData = trialData;
-		this.numEnabled = numEnabled;
+		this.inputsValid = {};
+
+		for(var i = 0; i < inputEnabledButtons.length; i++){
+			this.inputsValid[inputEnabledButtons[i][0] + ',' + inputEnabledButtons[i][1]] = 0;
+		}
 		this.maxVal = 0;
 	}
-	
 	draw(){
 		//alert(this.gridVals);
 		var context = this.canvas.getContext('2d');
@@ -72,6 +74,46 @@ class SquareGrid{
 		var button = document.getElementById(idx+","+idy);
 		this.enableButtonInput(button);		
 	}
+	hideInputByID(idx, idy){
+		var input = document.getElementById('input'+''+idx+","+idy);
+		this.hideInput(input)
+	}
+	hideInput(input){
+		input.hidden = true;
+	}
+	reportInputByID(idx, idy){
+		var input = document.getElementById('input'+''+idx+","+idy);
+		var clickData = {trialData: this.trialData, action: 'input', value: input.value, targetID: input.id, userGenerated: true};
+		$.post("/postmethod", {
+			javascript_data: JSON.stringify(clickData)
+		});
+	}
+	giveFeedback(idx, idy){
+		var id_ = idx+','+idy;
+		var p = document.createElement('div');
+		p.class = 'feedbackBox';
+		p.id = 'feedback'+id_;
+		var input = document.getElementById('input'+id_);
+		var button = document.getElementById(id_);
+		var body = document.getElementById('content');
+		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
+		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
+		p.innerText = 'You answered: '+input.value;
+		p.style.left = buttonLeft + buttonWidth + 'px';
+
+		p.style.top = button.style.top;
+		p.style.position = 'absolute';
+		p.style.border = '2px solid black';
+		p.style['background-color'] = 'white';
+		p.style['font-weight'] = 1000;
+		p.style['font-family'] = 'Consolas';
+		p.style.opacity = 0.85;
+		p.style.margin = '2px';
+		p.style.padding = '2px';
+
+		body.appendChild(p); 
+	}
+
 	enableButtonInput(button){
 		button.hidden = true;
 		var buttonRect = button.getBoundingClientRect();
@@ -84,7 +126,6 @@ class SquareGrid{
 		inp.style.position = "absolute";
 		inp.style.left = button.style.left;
 		inp.style.top = button.style.top;
-
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
 		var inpWidth = buttonWidth - 4;
@@ -107,7 +148,6 @@ class SquareGrid{
 		var body = document.getElementById('content');
 
 		body.appendChild(inp);
-
 		function colorDiv(div, currentVal, maxVal){
 			if(currentVal === ''){
 				div.style['background-color'] = '#FFFF9E';
@@ -122,8 +162,9 @@ class SquareGrid{
 			}
 		}
 		var maxVal = this.maxVal;
-		
+		var inputsValid = this.inputsValid;
 		inp.addEventListener('input', function(e){
+			
 			e.target.value = e.target.value.replace(/[^0-9]*/g,'');
 			var idx = e.target.id.substring(e.target.id.search('[0-9]'));
 			var divIdx = "div" + idx;
@@ -138,12 +179,21 @@ class SquareGrid{
 				alert('here');
 				e.target.value = e.target.value.slice(0,-1);
 			}
+			if(e.target.value && !isNaN(e.target.value)){
+				inputsValid[idx] = 1;
+			} else {
+				inputsValid[idx] = 0;
+			}
+
+			var vals = Object.values(inputsValid);
+			if(vals.every(function(val) { return val === 1; })){
+				document.getElementById('continueButton').hidden = false;
+			} else {
+				document.getElementById('continueButton').hidden = true;
+			}
 			colorDiv(div, e.target.value, maxVal);
-
-		})
+		});
 	}
-	
-
 	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled, trialData){
 
 		var button = document.createElement('button');
@@ -182,7 +232,7 @@ class SquareGrid{
 		});
 		button.addEventListener('click', function(e){
 			//alert(gridVals);
-			var clickData = {trialData: trialData, buttonClick: e.target.id, realClick: e.isTrusted};
+			var clickData = {trialData: trialData, action: 'click', value: gridVals[e.target.id], targetID: e.target.id, userGenerated: e.isTrusted};
 			$.post("/postmethod", {
 				javascript_data: JSON.stringify(clickData)
 			});
@@ -265,5 +315,6 @@ class SquareGrid{
 			
 		}
 	}
+	
 }
 

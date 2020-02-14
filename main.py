@@ -14,6 +14,10 @@ NUM_TRAIN = 5;
 NUM_TRIAL = 5;
 
 gridpoints = []
+clicked_buttons = [];
+enabled_buttons = [];
+input_enabled_buttons = [];
+
 for i in range(8):
 	for j in range(8):
 		gridpoints.append((i,j));
@@ -124,7 +128,7 @@ def get_post_javascript_data():
 
     click_data = json.loads(jsdata);
     
-    print(click_data);
+    print("\n{}\n".format(click_data));
 
     return "0";
 
