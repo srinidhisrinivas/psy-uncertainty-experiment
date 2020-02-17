@@ -9,7 +9,7 @@ app = Flask(__name__);
 app._static_folder_ = os.path.abspath('templates/static');
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-
+GRID_SIZE = 8;
 NUM_TRAIN = 5;
 NUM_TRIAL = 5;
 
@@ -18,12 +18,12 @@ clicked_buttons = [];
 enabled_buttons = [];
 input_enabled_buttons = [];
 
-for i in range(8):
-	for j in range(8):
+for i in range(GRID_SIZE):
+	for j in range(GRID_SIZE):
 		gridpoints.append((i,j));
 def get_rand_gridpoints_list(size=3):
 	res = [];
-	idx = np.random.randint(0, 64,size);
+	idx = np.random.randint(0, GRID_SIZE ** 2,size);
 	for id_ in idx:
 		res.append(gridpoints[id_]);
 
@@ -61,6 +61,8 @@ def render_end(pid):
 def render_trial(trial_num, pid):
 	if int(trial_num) > NUM_TRIAL:
 		return redirect('/%d/end'%(pid));
+	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Continue\' to continue.';
+	next_instructions = 'Select one of your predictions to waive. \n\n Click \'Next\' to continue.';
 	enabled_buttons = get_rand_gridpoints_list(3);
 	clicked_buttons = get_rand_gridpoints_list(4);
 	return render_template('layouts/grid.html',
@@ -77,7 +79,9 @@ def render_trial(trial_num, pid):
 		clicked_buttons = clicked_buttons,
 		title_text = 'Trial',
 		trial_type = 'trial', 
-		pid = pid);
+		pid = pid,
+		instructions = instructions,
+		next_instructions = next_instructions);
 
 @app.route('/<int:pid>/trialbegin')
 def render_trialbegin(pid):
@@ -94,6 +98,8 @@ def render_train(trial_num, pid):
 	if int(trial_num) > NUM_TRAIN:
 		return redirect('/%d/trialbegin'%(pid));
 
+	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Check\' to continue.';
+	next_instructions = 'Here are the actual values of the boxes you filled in. \n\nClick \'Next\' to continue.';
 	enabled_buttons = get_rand_gridpoints_list(3);
 	clicked_buttons = get_rand_gridpoints_list(4);
 	return render_template('layouts/grid.html',
@@ -110,7 +116,9 @@ def render_train(trial_num, pid):
 		clicked_buttons = clicked_buttons,
 		title_text = 'Training Phase',
 		trial_type = 'train',
-		pid = pid);
+		pid = pid,
+		instructions = instructions,
+		next_instructions = next_instructions);
 """
 @app.route('/postmethod', methods = ['POST'])
 def get_post_javascript_data():

@@ -15,6 +15,38 @@ div#trialTitle{
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }
+div#instructionText{
+	position: relative;
+	display:-webkit-box;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+	font-family: "Cambria";
+	font-weight: 300;
+	font-size: 18pt;
+	text-align: center;
+	white-space: pre-wrap;
+}
+#speech-bubble {
+	position: relative;
+	background: #fff3ff;
+	border-radius: .4em;
+	width: 300px;
+}
+
+#speech-bubble:after {
+	content: 'PNEIS';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 22px solid transparent;
+	border-bottom-color: #ffffff;
+	border-top: 0;
+	border-left: 0;
+	margin-left: -11px;
+	margin-top: -22px;
+}
 div#flexContainer{
 	display:flex;
 	flex-direction: column;
