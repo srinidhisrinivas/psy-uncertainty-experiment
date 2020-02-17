@@ -8,6 +8,7 @@ div#titleText{
 	top: 10%;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
+	
 }
 
 div#instructionText{
@@ -20,6 +21,7 @@ div#instructionText{
 	top: 25%;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
+	
 }
 div#startDiv{
 	position: fixed;
@@ -33,6 +35,7 @@ div#startDiv{
 	height: 60px;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
+	
 }
 
 #startButton{
