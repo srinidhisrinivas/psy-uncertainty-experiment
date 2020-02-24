@@ -120,7 +120,7 @@ class SquareGrid{
 		p.id = 'feedback'+id_;
 		var input = document.getElementById('input'+id_);
 		var button = document.getElementById(id_);
-		var body = document.getElementById('content');
+		var body = document.getElementById('gridlayer');
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
 		p.innerText = 'You answered: '+input.value;
@@ -170,7 +170,7 @@ class SquareGrid{
 		
 		inp.style['vertical-align'] =  'middle';
 		
-		var body = document.getElementById('content');
+		var body = document.getElementById('gridlayer');
 
 		body.appendChild(inp);
 		function colorDiv(div, currentVal, maxVal){
@@ -218,6 +218,7 @@ class SquareGrid{
 			}
 			colorDiv(div, e.target.value, maxVal);
 		});
+
 	}
 	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled, trialData){
 
@@ -325,7 +326,7 @@ class SquareGrid{
 		var gridT = rect.top + this.p + 3;
 		var bw = this.h - 1 - 2*this.p;
 		var step = bw / this.numCells - 3.5;
-		var body = document.getElementById("content");
+		var body = document.getElementById("gridlayer");
 		var arr = Object.values(gridVals);
 		var maxVal = Math.max(...arr);
 		this.maxVal = maxVal;
