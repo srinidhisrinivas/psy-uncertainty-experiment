@@ -90,7 +90,15 @@ class SquareGrid{
 	lockInput(input){
 		var id_ = input.id.substring(input.id.search('[0-9]'));
 		input.readOnly = true;
+		
+	}
+	enableSelectionByID(idx, idy, targetSelections, button){
+		var input = document.getElementById('input'+''+idx+","+idy);
+		this.enableSelection(input, targetSelections, button);
+	}
+	enableSelection(input, targetSelections, button){
 		var inputsSelected = this.inputsSelected;
+		var id_ = input.id.substring(input.id.search('[0-9]'));
 		input.addEventListener('click', function(e){
 			inputsSelected[id_] = 1 - inputsSelected[id_];
 			if(inputsSelected[id_] === 1){
@@ -98,14 +106,14 @@ class SquareGrid{
 			} else {
 				input.style.border = '2px solid black';
 			}
-			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) == 1){
-				document.getElementById('nextButton').disabled = false;
+			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) === targetSelections){
+				button.disabled = false;
 			} else {
-				document.getElementById('nextButton').disabled = true;
+				button.disabled = true;
 			}
-		})
-		
+		});
 	}
+
 	reportInputByID(idx, idy){
 		var input = document.getElementById('input'+''+idx+","+idy);
 		var inputData = {trialData: this.trialData, action: 'input', value: input.value, targetID: input.id, userGenerated: true};
@@ -113,7 +121,7 @@ class SquareGrid{
 			javascript_data: JSON.stringify(inputData)
 		});
 	}
-	giveFeedback(idx, idy){
+	giveFeedback(idx, idy, trueVal){
 		var id_ = idx+','+idy;
 		var p = document.createElement('div');
 		p.class = 'feedbackBox';
@@ -123,7 +131,7 @@ class SquareGrid{
 		var body = document.getElementById('gridlayer');
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
-		p.innerText = 'You answered: '+input.value;
+		p.innerText = 'Correct value: '+trueVal;
 		p.style.left = buttonLeft + buttonWidth + 'px';
 
 		p.style.top = button.style.top;
@@ -151,6 +159,7 @@ class SquareGrid{
 		inp.style.position = "absolute";
 		inp.style.left = button.style.left;
 		inp.style.top = button.style.top;
+		inp.style.outline = 'none';
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
 		var inpWidth = buttonWidth - 4;

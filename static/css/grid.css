@@ -21,13 +21,15 @@ html, body{
 #header { 
 	grid-area: header;
 	background-color: red;
+	text-align: center;
 
 }
 #headerText{
+	display: inline-block;
 	position: relative;
-	left: 46%;
-	top: 45%;
-	
+	margin: 0px auto;
+	background-color: green;
+	top: 40%;
 }
 
 #content { 
@@ -130,7 +132,7 @@ div#gridLayer{
 canvas#myCanvas{
 	position: fixed;
 	left: 50%;
-	top: 50%;
+	top: 55%;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 }

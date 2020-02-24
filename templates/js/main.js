@@ -16,7 +16,7 @@ function onWindowLoad(){
 	var enabledButtons = {{ enabled_buttons|tojson }};
 	var gridEnabled = (enabledButtons === "ALL"); 
 	try{
-		var grid = new SquareGrid(c, 400, 8, 5, trialData, enabledButtons);
+		var grid = new SquareGrid(c, 450, 8, 5, trialData, enabledButtons);
 	}
 	catch(e){
 		alert(e);
@@ -50,21 +50,23 @@ function onWindowLoad(){
 	continueButton.addEventListener('click', function(e){
 		var button = e.target;
 		button.disabled = true;
+		var nextButton = document.getElementById('nextButton');
 		for(var i = 0; i<enabledButtons.length; i++){
 			
 			grid.reportInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 			if(trialType === 'train'){
-				grid.clickButtonByID(enabledButtons[i][0], enabledButtons[i][1]);
-				grid.hideInputByID(enabledButtons[i][0], enabledButtons[i][1]);
-				grid.giveFeedback(enabledButtons[i][0], enabledButtons[i][1]);
+				//grid.clickButtonByID(enabledButtons[i][0], enabledButtons[i][1]);
+				grid.lockInputByID(enabledButtons[i][0], enabledButtons[i][1]);
+				grid.giveFeedback(enabledButtons[i][0], enabledButtons[i][1], gridVals[enabledButtons[i][0] + "," + enabledButtons[i][1]]);
 			} else {
 				grid.lockInputByID(enabledButtons[i][0], enabledButtons[i][1]);
+				grid.enableSelectionByID(enabledButtons[i][0], enabledButtons[i][1], 1, nextButton)
 			}
 			
 		}
 		
 		if(trialType === 'train') {
-			document.getElementById('nextButton').disabled = false;
+			nextButton.disabled = false;
 		}
 		document.getElementById('instructionText').innerText = {{ next_instructions|tojson }};
 	});
