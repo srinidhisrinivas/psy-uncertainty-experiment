@@ -7,13 +7,14 @@ html, body{
 	width: 100%;
 	margin: 0;
 	user-select: none;
+	overflow: hidden;
 }
 
 #wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.5fr 1.5fr 1fr;
-  grid-template-areas: "header header header header" "content content content right-sidebar" "content content content right-sidebar";
+  grid-template-rows: 0.5fr 1.3fr 1.2fr;
+  grid-template-areas: "header header header header" "content content content right-sidebar" "content content content buttonbox";
   height: 100%;
 }
 
@@ -39,9 +40,38 @@ html, body{
 	background-color: yellow;
 	border-radius: 15px;
 	border: 2px solid black;
+	margin-right: 14px;
+	padding: 10px;
+}
+#buttonbox{
+	grid-area: buttonbox; 
+	background-color: orange;
+	border-radius: 15px;
+	border: 2px solid black;
+	margin-right: 14px;
+	padding: 10px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 0.5fr 0.5fr;
+	grid-template-areas: "binstruction binstruction" "nwrapper cwrapper" "iwrapper iwrapper";
 }
 
-
+#binstruction{
+	grid-area: binstruction; 
+	background-color: black;
+}
+#nwrapper{
+	grid-area: nwrapper; 
+	background-color: purple;
+}
+#cwrapper{
+	grid-area: cwrapper; 
+	background-color: grey;
+}
+#iwrapper{
+	grid-area: iwrapper; 
+	background-color: pink;
+}
 div#headerText{
 	
 	font-family: "Cambria";
@@ -59,6 +89,17 @@ div#instructionText{
 	font-size: 18pt;
 	text-align: center;
 	white-space: pre-wrap;
+}
+div#instructionTitle{
+	display:-webkit-box;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+	font-family: "Cambria";
+	font-weight: 500;
+	font-size: 28pt;
+	text-align: center;
+	white-space: pre-wrap;
+	padding-bottom: 20px;
 }
 #speech-bubble {
 	position: relative;
@@ -94,18 +135,24 @@ canvas#myCanvas{
 	transform: translate(-50%, -50%);
 }
 
-#continueButton, #nextButton{
+#continueButton, #nextButton, #instButton{
 	width: 100%;
 	height: 100%;
 	background-color: #AF0000;
 	color: white;
 	font-family: "Consolas";
+	border: 4px solid #BEC0C2;
+	
+	border-radius: 8px;
 
 }
 #continueButton:hover{
 	background-color: #800000;
 }
 #nextButton:hover{
+	background-color: #800000;
+}
+#instButton:hover{
 	background-color: #800000;
 }
 #feedbackBox{

@@ -30,11 +30,19 @@
 	
 		</div>
 			<div id='right-sidebar'>
-		<div id="buttonDiv">
-			
+				<div id="instructionTitle"> Instructions </div>
+				<div id="instructionText"> placeholder text </div>
+			</div>
+		<div id="buttonbox">
+		<div id="binstruction"> placeholder text </div>
+			<div id="cwrapper">
 			<button hidden=true id="continueButton"> {% if trial_type == 'train' %} Check {% else %} Continue {% endif %}</button> 
-			<button hidden=true id="nextButton" onclick = "location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Next </button> 
+			</div>
+			<div id="nwrapper">
+			<button hidden=true id="nextButton" onclick = "location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Next </button> </div>
+			<div id="iwrapper">
+			<button id="instButton" onclick = "alert(instructions)"> Instructions </button> </div>
 		</div>
-		</div>
+	</div>
 
 {% endblock %}
