@@ -36,10 +36,10 @@
 		<div id="buttonbox">
 		<div id="binstruction"> placeholder text </div>
 			<div id="cwrapper">
-			<button hidden=true id="continueButton"> {% if trial_type == 'train' %} Check {% else %} Continue {% endif %}</button> 
+			<button disabled=true id="continueButton"> {% if trial_type == 'train' %} Check {% else %} Continue {% endif %}</button> 
 			</div>
 			<div id="nwrapper">
-			<button hidden=true id="nextButton" onclick = "location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Next </button> </div>
+			<button disabled=true id="nextButton" onclick = "location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Next </button> </div>
 			<div id="iwrapper">
 			<button id="instButton" onclick = "alert(instructions)"> Instructions </button> </div>
 		</div>

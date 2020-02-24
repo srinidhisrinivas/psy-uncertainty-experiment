@@ -99,9 +99,9 @@ class SquareGrid{
 				input.style.border = '2px solid black';
 			}
 			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) == 1){
-				document.getElementById('nextButton').hidden = false;
+				document.getElementById('nextButton').disabled = false;
 			} else {
-				document.getElementById('nextButton').hidden = true;
+				document.getElementById('nextButton').disabled = true;
 			}
 		})
 		
@@ -212,9 +212,9 @@ class SquareGrid{
 
 			var vals = Object.values(inputsValid);
 			if(vals.every(function(val) { return val === 1; })){
-				document.getElementById('continueButton').hidden = false;
+				document.getElementById('continueButton').disabled = false;
 			} else {
-				document.getElementById('continueButton').hidden = true;
+				document.getElementById('continueButton').disabled = true;
 			}
 			colorDiv(div, e.target.value, maxVal);
 		});
@@ -272,7 +272,7 @@ class SquareGrid{
 			}
 			if(clickData.realClick){
 				var continueButton = document.getElementById('continueButton');
-				continueButton.hidden = false;
+				continueButton.disabled = false;
 			}
 			
 			

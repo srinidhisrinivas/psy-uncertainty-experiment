@@ -49,7 +49,7 @@ function onWindowLoad(){
 	}
 	continueButton.addEventListener('click', function(e){
 		var button = e.target;
-		button.hidden = true;
+		button.disabled = true;
 		for(var i = 0; i<enabledButtons.length; i++){
 			
 			grid.reportInputByID(enabledButtons[i][0], enabledButtons[i][1]);
@@ -64,7 +64,7 @@ function onWindowLoad(){
 		}
 		
 		if(trialType === 'train') {
-			document.getElementById('nextButton').hidden = false;
+			document.getElementById('nextButton').disabled = false;
 		}
 		document.getElementById('instructionText').innerText = {{ next_instructions|tojson }};
 	});

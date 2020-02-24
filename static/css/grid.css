@@ -53,7 +53,7 @@ html, body{
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 1fr 0.5fr 0.5fr;
-	grid-template-areas: "binstruction binstruction" "nwrapper cwrapper" "iwrapper iwrapper";
+	grid-template-areas: "binstruction binstruction" "cwrapper nwrapper" "iwrapper iwrapper";
 }
 
 #binstruction{
@@ -135,26 +135,35 @@ canvas#myCanvas{
 	transform: translate(-50%, -50%);
 }
 
-#continueButton, #nextButton, #instButton{
+#continueButton:enabled, #nextButton:enabled, #instButton:enabled{
 	width: 100%;
 	height: 100%;
 	background-color: #AF0000;
 	color: white;
 	font-family: "Consolas";
-	border: 4px solid #BEC0C2;
+	border: 3px solid #BEC0C2;
+	outline: none;
+	border-radius: 8px;
+
+}
+#continueButton:disabled, #nextButton:disabled, #instButton:disabled{
+	width: 100%;
+	height: 100%;
+	background-color: #B3B6B5;
+	color: #70706F;
+	font-family: "Consolas";
+	border: 3px solid black;
 	
 	border-radius: 8px;
 
 }
-#continueButton:hover{
+#continueButton:hover:enabled, #nextButton:hover:enabled, 
+#instButton:hover:enabled{
 	background-color: #800000;
+	border:3px solid #8E8E8D;
+	color: #BEC0C2;
 }
-#nextButton:hover{
-	background-color: #800000;
-}
-#instButton:hover{
-	background-color: #800000;
-}
+
 #feedbackBox{
 	background-color: white;
 	font-family: 'Bahnschrift';
