@@ -135,7 +135,7 @@ class SquareGrid{
 		p.style.left = buttonLeft + buttonWidth + 'px';
 
 		p.style.top = button.style.top;
-		p.style.position = 'absolute';
+		p.style.position = 'fixed';
 		p.style.border = '2px solid black';
 		p.style['background-color'] = 'white';
 		p.style['font-weight'] = 1000;
@@ -156,7 +156,7 @@ class SquareGrid{
 		inp.min = '0';
 		inp.max = '99';
 		inp.maxlength = 2;
-		inp.style.position = "absolute";
+		inp.style.position = 'fixed';
 		inp.style.left = button.style.left;
 		inp.style.top = button.style.top;
 		inp.style.outline = 'none';
@@ -235,7 +235,7 @@ class SquareGrid{
 		button.setAttribute('class', 'unmoused');
 		button.style.width = step + 0.1 + "px";
 		button.style.height = step + 0.1 + "px" ;
-		button.style.position = "absolute";
+		button.style.position = 'fixed';
 		button.style.left = gridL + idx * (step + this.p - 1.45) + "px";
 		button.style.top = gridT + idy * (step + this.p - 1.45) + "px";
 
@@ -309,7 +309,7 @@ class SquareGrid{
 		var button = document.createElement('div');
 		button.style.width = step + 0.1 + "px";
 		button.style.height = step + 0.1+"px" ;
-		button.style.position = "absolute";
+		button.style.position = 'fixed';
 		button.style.left = gridL + idx * (step + this.p - 1.45) + "px";
 		button.style.top = gridT + idy * (step + this.p - 1.45) + "px";
 		button.style['text-align'] = "center";
@@ -333,6 +333,8 @@ class SquareGrid{
 		var rect = this.canvas.getBoundingClientRect();
 		var gridL = rect.left + this.p + 3;
 		var gridT = rect.top + this.p + 3;
+		alert(gridL);
+		alert(gridT);
 		var bw = this.h - 1 - 2*this.p;
 		var step = bw / this.numCells - 3.5;
 		var body = document.getElementById("gridlayer");

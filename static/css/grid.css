@@ -14,43 +14,46 @@ html, body{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.5fr 1.3fr 1.2fr;
-  grid-template-areas: "header header header header" "content content content right-sidebar" "content content content buttonbox";
+  grid-template-areas: "header header header right-sidebar" "content content content right-sidebar" "content content content buttonbox";
   height: 100%;
 }
 
 #header { 
 	grid-area: header;
-	background-color: red;
+	/*background-color: red;*/
 	text-align: center;
 
 }
 #headerText{
 	display: inline-block;
-	position: relative;
 	margin: 0px auto;
-	background-color: green;
+	position: relative;
+	/*background-color: green;*/
 	top: 40%;
 }
 
 #content { 
 	grid-area: content;
-	background-color: blue;
+	background-color: #FFF9D0;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
 }
 
 #right-sidebar { 
 	grid-area: right-sidebar; 
-	background-color: yellow;
+	background-color: #f9f9f9;
 	border-radius: 15px;
 	border: 2px solid black;
-	margin-right: 14px;
+	margin: 5px 14px 5px 0px;
 	padding: 10px;
 }
 #buttonbox{
 	grid-area: buttonbox; 
-	background-color: orange;
+	background-color: #f9f9f9;
 	border-radius: 15px;
 	border: 2px solid black;
-	margin-right: 14px;
+	margin: 5px 14px 5px 0px;
 	padding: 10px;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -60,19 +63,19 @@ html, body{
 
 #binstruction{
 	grid-area: binstruction; 
-	background-color: black;
+	/*background-color: black;*/
 }
 #nwrapper{
 	grid-area: nwrapper; 
-	background-color: purple;
+	/*background-color: purple;*/
 }
 #cwrapper{
 	grid-area: cwrapper; 
-	background-color: grey;
+	/*background-color: grey;*/
 }
 #iwrapper{
 	grid-area: iwrapper; 
-	background-color: pink;
+	/*background-color: pink;*/
 }
 div#headerText{
 	
@@ -82,7 +85,7 @@ div#headerText{
 	text-align: left;
 	
 }
-div#instructionText{
+div#instructionText, #binstruction{
 	display:-webkit-box;
 	-webkit-box-pack:center;
 	-webkit-box-align:center;
@@ -125,18 +128,30 @@ div#instructionTitle{
 	margin-top: -22px;
 }
 
-div#gridLayer{
-	position: relative;
-	
-}
+div#gridlayer{
+/*	margin: 0px auto;
+ 	background-color: orange;*/
+ 	/*border: 8px solid white;*/
+ 	text-align: center;
+ 	position: relative;
+ 	top: 5%;
+ }
 canvas#myCanvas{
-	position: fixed;
-	left: 50%;
-	top: 55%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+	margin: 0px auto;
+	background-color: white;
+	border: 2px solid black;
 }
-
+#continueButton{
+	margin-right: 2px;
+	margin-bottom: 2px;
+}
+#nextButton{
+	margin-left: 2px;
+	margin-bottom: 2px;
+}
+#instButton{
+	margin-top: 2px;
+}
 #continueButton:enabled, #nextButton:enabled, #instButton:enabled{
 	width: 100%;
 	height: 100%;
@@ -154,7 +169,7 @@ canvas#myCanvas{
 	background-color: #B3B6B5;
 	color: #70706F;
 	font-family: "Consolas";
-	border: 3px solid black;
+	border: 3px solid gray;
 	
 	border-radius: 8px;
 

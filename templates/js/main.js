@@ -22,7 +22,7 @@ function onWindowLoad(){
 		alert(e);
 	}
 	
-	grid.setButtons(gridVals, gridEnabled);
+	grid.setButtons(gridVals, gridEnabled); 
 	for(var i = 0; i<enabledButtons.length; i++){
 		grid.enableButtonInputByID(enabledButtons[i][0], enabledButtons[i][1])
 	}
@@ -69,6 +69,6 @@ function onWindowLoad(){
 			nextButton.disabled = false;
 		}
 		document.getElementById('instructionText').innerText = {{ next_instructions|tojson }};
-	});
+	}); 
 }
 
