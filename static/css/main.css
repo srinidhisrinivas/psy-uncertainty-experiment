@@ -1,3 +1,6 @@
+html, body{
+	background-color: #FFF9D0;
+}
 div#titleText{
 	position: fixed;
 	font-family: "Cambria";

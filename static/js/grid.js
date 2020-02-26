@@ -90,7 +90,15 @@ class SquareGrid{
 	lockInput(input){
 		var id_ = input.id.substring(input.id.search('[0-9]'));
 		input.readOnly = true;
+		
+	}
+	enableSelectionByID(idx, idy, targetSelections, button){
+		var input = document.getElementById('input'+''+idx+","+idy);
+		this.enableSelection(input, targetSelections, button);
+	}
+	enableSelection(input, targetSelections, button){
 		var inputsSelected = this.inputsSelected;
+		var id_ = input.id.substring(input.id.search('[0-9]'));
 		input.addEventListener('click', function(e){
 			inputsSelected[id_] = 1 - inputsSelected[id_];
 			if(inputsSelected[id_] === 1){
@@ -98,14 +106,14 @@ class SquareGrid{
 			} else {
 				input.style.border = '2px solid black';
 			}
-			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) == 1){
-				document.getElementById('nextButton').hidden = false;
+			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) === targetSelections){
+				button.disabled = false;
 			} else {
-				document.getElementById('nextButton').hidden = true;
+				button.disabled = true;
 			}
-		})
-		
+		});
 	}
+
 	reportInputByID(idx, idy){
 		var input = document.getElementById('input'+''+idx+","+idy);
 		var inputData = {trialData: this.trialData, action: 'input', value: input.value, targetID: input.id, userGenerated: true};
@@ -113,21 +121,21 @@ class SquareGrid{
 			javascript_data: JSON.stringify(inputData)
 		});
 	}
-	giveFeedback(idx, idy){
+	giveFeedback(idx, idy, trueVal){
 		var id_ = idx+','+idy;
 		var p = document.createElement('div');
 		p.class = 'feedbackBox';
 		p.id = 'feedback'+id_;
 		var input = document.getElementById('input'+id_);
 		var button = document.getElementById(id_);
-		var body = document.getElementById('content');
+		var body = document.getElementById('gridlayer');
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
-		p.innerText = 'You answered: '+input.value;
+		p.innerText = 'Correct value: '+trueVal;
 		p.style.left = buttonLeft + buttonWidth + 'px';
 
 		p.style.top = button.style.top;
-		p.style.position = 'absolute';
+		p.style.position = 'fixed';
 		p.style.border = '2px solid black';
 		p.style['background-color'] = 'white';
 		p.style['font-weight'] = 1000;
@@ -148,9 +156,10 @@ class SquareGrid{
 		inp.min = '0';
 		inp.max = '99';
 		inp.maxlength = 2;
-		inp.style.position = "absolute";
+		inp.style.position = 'fixed';
 		inp.style.left = button.style.left;
 		inp.style.top = button.style.top;
+		inp.style.outline = 'none';
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
 		var inpWidth = buttonWidth - 4;
@@ -170,7 +179,7 @@ class SquareGrid{
 		
 		inp.style['vertical-align'] =  'middle';
 		
-		var body = document.getElementById('content');
+		var body = document.getElementById('gridlayer');
 
 		body.appendChild(inp);
 		function colorDiv(div, currentVal, maxVal){
@@ -212,12 +221,13 @@ class SquareGrid{
 
 			var vals = Object.values(inputsValid);
 			if(vals.every(function(val) { return val === 1; })){
-				document.getElementById('continueButton').hidden = false;
+				document.getElementById('continueButton').disabled = false;
 			} else {
-				document.getElementById('continueButton').hidden = true;
+				document.getElementById('continueButton').disabled = true;
 			}
 			colorDiv(div, e.target.value, maxVal);
 		});
+
 	}
 	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled, trialData){
 
@@ -225,7 +235,7 @@ class SquareGrid{
 		button.setAttribute('class', 'unmoused');
 		button.style.width = step + 0.1 + "px";
 		button.style.height = step + 0.1 + "px" ;
-		button.style.position = "absolute";
+		button.style.position = 'fixed';
 		button.style.left = gridL + idx * (step + this.p - 1.45) + "px";
 		button.style.top = gridT + idy * (step + this.p - 1.45) + "px";
 
@@ -271,7 +281,7 @@ class SquareGrid{
 			}
 			if(clickData.realClick){
 				var continueButton = document.getElementById('continueButton');
-				continueButton.hidden = false;
+				continueButton.disabled = false;
 			}
 			
 			
@@ -299,7 +309,7 @@ class SquareGrid{
 		var button = document.createElement('div');
 		button.style.width = step + 0.1 + "px";
 		button.style.height = step + 0.1+"px" ;
-		button.style.position = "absolute";
+		button.style.position = 'fixed';
 		button.style.left = gridL + idx * (step + this.p - 1.45) + "px";
 		button.style.top = gridT + idy * (step + this.p - 1.45) + "px";
 		button.style['text-align'] = "center";
@@ -323,9 +333,11 @@ class SquareGrid{
 		var rect = this.canvas.getBoundingClientRect();
 		var gridL = rect.left + this.p + 3;
 		var gridT = rect.top + this.p + 3;
+		alert(gridL);
+		alert(gridT);
 		var bw = this.h - 1 - 2*this.p;
 		var step = bw / this.numCells - 3.5;
-		var body = document.getElementById("content");
+		var body = document.getElementById("gridlayer");
 		var arr = Object.values(gridVals);
 		var maxVal = Math.max(...arr);
 		this.maxVal = maxVal;

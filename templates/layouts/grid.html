@@ -14,20 +14,35 @@
 {% block content %}
 {% set next_trial_num = trial_num + 1 %}
 
-		<div id="trialTitle" onselectstart='return false;'> {{ title_text }} #{{ trial_num }} </div>
+		<div id="header">
+			<div id="headerText" onselectstart='return false;'> {{ title_text }} #{{ trial_num }} </div>
+		</div>
 		{#<div id='speech-bubble'>
 		<div id="instructionText" onselectstart='return false;'> {{ instructions }} </div>
 		</div> #}
+		
+		<div id="content">
 		<div id="gridlayer" onselectstart = "return false;">
 
-			<canvas id="myCanvas" style="fill: 'white'; border: solid black 1px;"></canvas>
+			<canvas id="myCanvas"></canvas>
 
 		</div>
-
-		<div id="buttonDiv">
-			
-			<button hidden=true id="continueButton"> {% if trial_type == 'train' %} Check {% else %} Continue {% endif %}</button> 
-			<button hidden=true id="nextButton" onclick = "location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Next </button> 
+	
 		</div>
+			<div id='right-sidebar'>
+				<div id="instructionTitle"> Instructions </div>
+				<div id="instructionText"> placeholder text </div>
+			</div>
+		<div id="buttonbox">
+		<div id="binstruction"> placeholder text </div>
+			<div id="cwrapper">
+			<button disabled=true id="continueButton"> {% if trial_type == 'train' %} Check {% else %} Continue {% endif %}</button> 
+			</div>
+			<div id="nwrapper">
+			<button disabled=true id="nextButton" onclick = "location.href = '/{{ pid }}/{{ trial_type }}/{{ next_trial_num }}'"> Next </button> </div>
+			<div id="iwrapper">
+			<button id="instButton" onclick = "alert(instructions)"> Instructions </button> </div>
+		</div>
+	</div>
 
 {% endblock %}
