@@ -333,8 +333,6 @@ class SquareGrid{
 		var rect = this.canvas.getBoundingClientRect();
 		var gridL = rect.left + this.p + 3;
 		var gridT = rect.top + this.p + 3;
-		alert(gridL);
-		alert(gridT);
 		var bw = this.h - 1 - 2*this.p;
 		var step = bw / this.numCells - 3.5;
 		var body = document.getElementById("gridlayer");

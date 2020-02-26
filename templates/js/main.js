@@ -30,7 +30,14 @@ function onWindowLoad(){
 		grid.clickButtonByID(clickedButtons[i][0], clickedButtons[i][1])
 	}
 	var continueButton = document.getElementById('continueButton');
-	if(trialType == 'trial'){
+	if(trialType === 'train' && trialNum === 1){
+	
+		var ann = createFirstTrainInputAnno(enabledButtons[0])
+		ann.show();
+	}
+		
+	if(trialType === 'trial'){
+
 		var nextButton = document.getElementById('nextButton');
 		nextButton.addEventListener('click', function(e){
 			var selectedIdx = "0,0";

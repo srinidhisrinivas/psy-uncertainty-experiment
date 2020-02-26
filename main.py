@@ -71,7 +71,7 @@ def render_trial(trial_num, pid):
 			{'src': url_for('static', filename='js/jpalette.min.js')}, 
 			{'src': url_for('static', filename='js/colors.js')},
 			{'src': url_for('static', filename='js/grid.js')},
-			{'src': 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'} ],
+			{'src': url_for('static', filename='js/annotations.js')}],
 		template_scripts = [
 			{'src': "js/main.js"} ],
 		grid_values = get_val_dict(8),
@@ -108,7 +108,7 @@ def render_train(trial_num, pid):
 			{'src': url_for('static', filename='js/jpalette.min.js')}, 
 			{'src': url_for('static', filename='js/colors.js')},
 			{'src': url_for('static', filename='js/grid.js')},
-			{'src': 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'} ],
+			{'src': url_for('static', filename='js/annotations.js')}],
 		template_scripts = [
 			{'src': "js/main.js"} ],
 		grid_values = get_val_dict(8),
