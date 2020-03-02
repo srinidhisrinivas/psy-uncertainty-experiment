@@ -162,8 +162,10 @@ def get_cell_val(idx, idy):
 	return val;
 
 def get_val_dict(num_cells):
-	if os.path.isfile('valdict.json'):
-		with open('valdict.json', 'r') as f_in:
+	val_dict = np.random.randint(1,6);
+	filename = "valdicts/valdict{}.json".format(val_dict);
+	if os.path.isfile(filename):
+		with open(filename, 'r') as f_in:
 			return json.load(f_in);
 
 	val_dict = {}
