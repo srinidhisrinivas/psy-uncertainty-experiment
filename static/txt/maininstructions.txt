@@ -1,0 +1,14 @@
+Welcome to your new assignment!
+
+You are taking over for our previous terrain scout. Your task is to estimate the height of the
+terrain at certain unknown points in the region. You will do this by entering a number in each empty
+space in the region. You must use the height of the terrain at the points available to you to
+estimate the height of the unknown points.
+
+In the beginning, our former terrain scout, who is very experienced, will be training you to
+estimate the height of the terrain at the uncertain points by correcting your guesses.
+
+Once you are through the training phase, you will be asked to estimate some new terrains that we are
+yet to map, and assess how confident you are about your estimates.
+
+Good luck!

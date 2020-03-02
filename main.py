@@ -39,7 +39,11 @@ def dir_last_updated(folder):
 def index():
 	pid = random.randint(0, 1000);
 	print('/%d/train/1'%(pid));
-	instructions = 'instructions';
+	instructions = '';
+	with open(url_for('static', filename='txt/maininstructions.txt')[1:], 'r') as f:
+		for line in f:
+			instructions += line;
+
 	return render_template('layouts/index.html',
 		page_title = 'Experiment Name',
 		body_text = instructions,
@@ -85,7 +89,10 @@ def render_trial(trial_num, pid):
 
 @app.route('/<int:pid>/trialbegin')
 def render_trialbegin(pid):
-	instructions = 'instructions before trial begins';
+	instructions = '';
+	with open(url_for('static', filename='txt/traininstructions.txt')[1:], 'r') as f:
+		for line in f:
+			instructions += line;
 	return render_template('layouts/index.html',
 		page_title = 'Training Phase Complete',
 		body_text = instructions,
