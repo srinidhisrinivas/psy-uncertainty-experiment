@@ -40,9 +40,6 @@ def index():
 	pid = random.randint(0, 1000);
 	print('/%d/train/1'%(pid));
 	instructions = '';
-	print(os.getcwd());
-	print(os.listdir(os.getcwd()));
-	print(os.listdir(url_for('static', filename='txt')[1:]));
 	with open(url_for('static', filename='txt/maininstructions.txt')[1:], 'r') as f:
 		for line in f:
 			instructions += line;
