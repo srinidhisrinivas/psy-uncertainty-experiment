@@ -22,6 +22,7 @@ div#instructionText{
 	left: 50%;
 	text-align: left;
 	top: 25%;
+	background-color: orange;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	
