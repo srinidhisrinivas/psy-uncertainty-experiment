@@ -6,7 +6,7 @@ space in the region. You must use the height of the terrain at the points availa
 estimate the height of the unknown points.
 
 In the beginning, our former terrain scout, who is very experienced, will be training you to
-estimate the height of the terrain at the uncertain points by correcting your guesses.
+estimate the height of the terrain at the uncertain points by providing corrections to your guesses.
 
 Once you are through the training phase, you will be asked to estimate some new terrains that we are
 yet to map, and assess how confident you are about your estimates.

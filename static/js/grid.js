@@ -106,10 +106,18 @@ class SquareGrid{
 			} else {
 				input.style.border = '2px solid black';
 			}
+			function getKeyByValue(object, value) {
+			  return Object.keys(object).find(key => object[key] === value);
+			}
+
 			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) === targetSelections){
 				button.disabled = false;
+				var selectedidx = getKeyByValue(inputsSelected, 1);
+				var selectedval = document.getElementById("input"+selectedidx).value;
+				document.getElementById('binstruction').innerText = "You are about to waive estimate " + selectedval + ". Click \'Next\' to continue."; 
 			} else {
 				button.disabled = true;
+				document.getElementById('binstruction').innerText = "Select ONE estimate to waive."
 			}
 		});
 	}
@@ -218,12 +226,15 @@ class SquareGrid{
 			} else {
 				inputsValid[idx] = 0;
 			}
-
+			
 			var vals = Object.values(inputsValid);
 			if(vals.every(function(val) { return val === 1; })){
 				document.getElementById('continueButton').disabled = false;
+				
+
 			} else {
 				document.getElementById('continueButton').disabled = true;
+				
 			}
 			colorDiv(div, e.target.value, maxVal);
 		});
