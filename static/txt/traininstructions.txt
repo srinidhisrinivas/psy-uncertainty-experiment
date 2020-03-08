@@ -1,4 +1,4 @@
-You finished training! You are now ready to estimate scout some unknown terrains!
+You finished training! You are now ready to estimate some unknown terrains!
 
 For each region, enter your estimate for the height of the terrain in the empty spaces as before.
 Click 'Continue' in the bottom right once you are sure of your estimates to lock in your answers. 

@@ -47,7 +47,7 @@ def index():
 			instructions += line;
 
 	return render_template('layouts/index.html',
-		page_title = 'Experiment Name',
+		page_title = 'I haven\'t yet thought of an experiment name, but it would go here.',
 		body_text = instructions,
 		button_dest = '/%d/train/1'%(pid),
 		button_text = 'Begin Training'

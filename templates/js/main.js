@@ -66,6 +66,7 @@ function onWindowLoad(){
 			} else {
 				grid.lockInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 				grid.enableSelectionByID(enabledButtons[i][0], enabledButtons[i][1], 1, nextButton)
+				document.getElementById('binstruction').innerText = 'Select ONE estimate to waive.'
 			}
 			
 		}
