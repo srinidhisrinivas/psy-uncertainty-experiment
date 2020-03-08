@@ -13,6 +13,8 @@ GRID_SIZE = 8;
 NUM_TRAIN = 5;
 NUM_TRIAL = 5;
 
+distance_fraction = 0.5;
+current_max_uncertainty_idx = "0,0";
 gridpoints = []
 clicked_buttons = [];
 enabled_buttons = [];
@@ -67,8 +69,7 @@ def render_trial(trial_num, pid):
 		return redirect('/%d/end'%(pid));
 	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Continue\' to continue.';
 	next_instructions = 'Select one of your predictions to waive. \n\n Click \'Next\' to continue.';
-	enabled_buttons = get_rand_gridpoints_list(3);
-	clicked_buttons = get_rand_gridpoints_list(4);
+	gridvals, enabled_buttons, clicked_buttons = get_trial();
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [
@@ -78,7 +79,7 @@ def render_trial(trial_num, pid):
 			{'src': 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'} ],
 		template_scripts = [
 			{'src': "js/main.js"} ],
-		grid_values = get_val_dict(8),
+		grid_values = gridvals,
 		enabled_buttons = enabled_buttons,
 		clicked_buttons = clicked_buttons,
 		title_text = 'Trial',
@@ -107,8 +108,11 @@ def render_train(trial_num, pid):
 
 	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Check\' to continue.';
 	next_instructions = 'Here are the actual values of the boxes you filled in. \n\nClick \'Next\' to continue.';
-	enabled_buttons = get_rand_gridpoints_list(3);
-	clicked_buttons = get_rand_gridpoints_list(4);
+	gridvals, enabled_buttons, clicked_buttons = get_trial();
+	print(type(gridvals["0,3"]));
+	print(type(enabled_buttons[0][0]));
+	print(type(clicked_buttons[0]));
+
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [
@@ -118,7 +122,7 @@ def render_train(trial_num, pid):
 			{'src': 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'} ],
 		template_scripts = [
 			{'src': "js/main.js"} ],
-		grid_values = get_val_dict(8),
+		grid_values = gridvals,
 		enabled_buttons = enabled_buttons,
 		clicked_buttons = clicked_buttons,
 		title_text = 'Training Phase',
@@ -160,6 +164,78 @@ def get_cell_val(idx, idy):
 	val = abs(int(55*np.mean(z)));
 	#val = abs(float('%.1f'%(np.mean(z))))
 	return val;
+
+def listidx_to_stringidx(listidx):
+	return str(listidx[0] + "," + listidx[1]);
+
+
+def gridvals_to_dict(gridvals):
+	valdict = {};
+	for i in range(len(gridvals)):
+		for j in range(len(gridvals[0])):
+			valdict[str(i) + "," + str(j)] = gridvals[i][j];
+
+	return valdict;
+
+def scalar_to_2dindex(idx, n):
+	idx1 = int(idx / n);
+	idx2 = (idx % n).item();
+	return (idx1, idx2);
+
+def assemble_trial(filename):
+	json_dict = {};
+	print(filename);
+	if os.path.isfile(filename):
+		with open(filename, 'r') as f_in:
+			json_dict = json.load(f_in);
+
+	revealed_idx = json_dict['revealed_idx'];
+	json_dict['revealed_idx'] = revealed_idx;
+	uncertainty_variance = json_dict['uncertainty_variance'];
+	gridvals = gridvals_to_dict(json_dict['gridvals']);
+	variances = np.array(json_dict['variances']);
+
+	clicked_buttons = [(idx[0],idx[1]) for idx in revealed_idx];
+	
+	for idx in clicked_buttons:
+		variances[idx] = np.inf;
+
+	print(variances);
+	enabled_buttons = [];
+
+	# picking lowest variance point at random
+	min_var = np.min(variances);
+	min_idx, min_idy = np.where(variances == min_var);
+	randi = np.random.randint(len(min_idx));
+	# print(min_var);
+	# print(min_idx[randi], min_idy[randi]);
+	enabled_buttons.append((int(min_idx[randi]), int(min_idy[randi])));
+
+	# picking highest variance point at random
+	variances = np.where(variances == np.inf, np.NINF, variances)
+	max_var = np.max(variances);
+	max_idx, max_idy = np.where(variances == max_var);
+	randi = np.random.randint(len(max_idx));
+	enabled_buttons.append((int(max_idx[randi]), int(max_idy[randi])));
+
+	# picking intermediate variance point at random
+	int_var = distance_fraction * (max_var - min_var);
+	variances = np.where(variances == np.NINF, np.inf, variances)
+	print(int_var)
+	distance = np.abs(variances - min_var - int_var);
+	print(distance);
+	int_idx, int_idy = np.where(distance == np.min(distance));
+	randi = np.random.randint(len(int_idx));
+	enabled_buttons.append((int(int_idx[randi]), int(int_idy[randi])));
+
+	return gridvals, enabled_buttons, clicked_buttons;
+
+
+def get_trial():
+	file_num = np.random.randint(1,6);
+	filename = 'valdicts/sample{}.json'.format(file_num);
+	gridvals, enabled_buttons, clicked_buttons = assemble_trial(filename);
+	return gridvals, enabled_buttons, clicked_buttons;
 
 def get_val_dict(num_cells):
 	val_dict = np.random.randint(1,6);
