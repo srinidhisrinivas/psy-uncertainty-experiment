@@ -70,6 +70,9 @@ def render_trial(trial_num, pid):
 	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Continue\' to continue.';
 	next_instructions = 'Select one of your predictions to waive. \n\n Click \'Next\' to continue.';
 	gridvals, enabled_buttons, clicked_buttons = get_trial();
+	print(gridvals);
+	print(enabled_buttons);
+	print(clicked_buttons);
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [

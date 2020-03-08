@@ -196,7 +196,7 @@ class SquareGrid{
 				var val = parseFloat(currentVal);
 				var fRatio = (maxVal - val) / maxVal;
 				
-				var color = rygbColorMap.getColor(fRatio).rgb();
+				var color = redColorMap.getColor(fRatio).rgb();
 				//alert(color);
 				
 				div.style['background-color'] = color;
@@ -304,7 +304,7 @@ class SquareGrid{
 				div.innerText = val;
 				var fRatio = (maxVal - val) / maxVal;
 				//alert(fRatio);
-				var color = rygbColorMap.getColor(fRatio).rgb();
+				var color = redColorMap.getColor(fRatio).rgb();
 				//alert(color);
 				div.style['box-sizing'] = "border-box";
 				div.style.border = "2px solid grey";
