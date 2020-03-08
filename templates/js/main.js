@@ -51,11 +51,15 @@ function onWindowLoad(){
 		var button = e.target;
 		button.disabled = true;
 		var nextButton = document.getElementById('nextButton');
+		if(trialType === 'train'){
+			grid.clickAllButtons();
+		}
 		for(var i = 0; i<enabledButtons.length; i++){
 			
 			grid.reportInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 			if(trialType === 'train'){
 				//grid.clickButtonByID(enabledButtons[i][0], enabledButtons[i][1]);
+				grid.hideInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 				grid.lockInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 				grid.giveFeedback(enabledButtons[i][0], enabledButtons[i][1], gridVals[enabledButtons[i][0] + "," + enabledButtons[i][1]]);
 			} else {

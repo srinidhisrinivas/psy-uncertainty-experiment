@@ -127,14 +127,16 @@ class SquareGrid{
 		p.class = 'feedbackBox';
 		p.id = 'feedback'+id_;
 		var input = document.getElementById('input'+id_);
+		var div = document.getElementById('div'+id_);
 		var button = document.getElementById(id_);
 		var body = document.getElementById('gridlayer');
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
-		p.innerText = 'Correct value: '+trueVal;
-		p.style.left = buttonLeft + buttonWidth + 'px';
+		p.innerText = input.value;
+		p.style.left = (buttonLeft + buttonWidth - 15) + 'px';
 
-		p.style.top = button.style.top;
+		var buttonTop = parseFloat(button.style.top.substring(0,button.style.top.indexOf('p')));
+		p.style.top = (buttonTop - 15) + 'px';
 		p.style.position = 'fixed';
 		p.style.border = '2px solid black';
 		p.style['background-color'] = 'white';
@@ -143,6 +145,11 @@ class SquareGrid{
 		p.style.opacity = 0.85;
 		p.style.margin = '2px';
 		p.style.padding = '2px';
+		p.style.width = '20px';
+
+		div.style.border = '3px solid black';
+
+		
 
 		body.appendChild(p); 
 	}
@@ -169,7 +176,7 @@ class SquareGrid{
 		inp.style.height = inpHeight + 'px';
 
 		inp.style.background = 'transparent';
-		inp.style.border = '2px solid black';
+		inp.style.border = '3px solid black';
 
 		inp.style['font-family'] = "Bahnschrift";
 
@@ -228,6 +235,13 @@ class SquareGrid{
 			colorDiv(div, e.target.value, maxVal);
 		});
 
+	}
+	clickAllButtons(){
+		for(var i = 0; i < this.numCells; i++){
+			for(var j = 0; j < this.numCells; j++){
+				this.clickButtonByID(i,j);
+			}
+		}
 	}
 	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled, trialData){
 

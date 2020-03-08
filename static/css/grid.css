@@ -186,6 +186,15 @@ canvas#myCanvas{
 	font-family: 'Bahnschrift';
 	font-size: 16pt;
 	border: 2px solid black;
+	position: relative;
+}
+#feedbackBox::after {
+	border-left: 20px solid transparent;
+    border-top: 20px solid #efefef;
+    bottom: -20px;
+    content: "";
+    position: absolute;
+    right: 20px;
 }
 
 div#buttonDiv{
