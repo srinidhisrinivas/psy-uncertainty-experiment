@@ -221,8 +221,10 @@ class SquareGrid{
 		inp.max = '99';
 		inp.maxlength = 2;
 		inp.style.position = 'fixed';
-		inp.style.left = button.style.left;
-		inp.style.top = button.style.top;
+		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
+		var buttonTop = parseFloat(button.style.top.substring(0,button.style.top.indexOf('p')));
+		inp.style.left = (buttonLeft) + 'px';
+		inp.style.top = (buttonTop + 2) + 'px';
 		inp.style.outline = 'none';
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
