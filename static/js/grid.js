@@ -143,8 +143,9 @@ class SquareGrid{
 		var div = document.getElementById('div'+id_);
 		div.innerText = input.value;
 		input.value = '';
+		input.hidden = true;
 		
-		input.addEventListener('click', function(e){
+		div.addEventListener('click', function(e){
 			if(inputsSelected[id_] === 1){
 				deselector(id_, grid);
 			} else {
