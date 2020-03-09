@@ -143,8 +143,9 @@ class SquareGrid{
 		var div = document.getElementById('div'+id_);
 		div.innerText = input.value;
 		input.value = '';
+		input.hidden = true;
 		
-		input.addEventListener('click', function(e){
+		div.addEventListener('click', function(e){
 			if(inputsSelected[id_] === 1){
 				deselector(id_, grid);
 			} else {
@@ -220,8 +221,10 @@ class SquareGrid{
 		inp.max = '99';
 		inp.maxlength = 2;
 		inp.style.position = 'fixed';
-		inp.style.left = button.style.left;
-		inp.style.top = button.style.top;
+		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
+		var buttonTop = parseFloat(button.style.top.substring(0,button.style.top.indexOf('p')));
+		inp.style.left = (buttonLeft) + 'px';
+		inp.style.top = (buttonTop + 2) + 'px';
 		inp.style.outline = 'none';
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
@@ -328,7 +331,7 @@ class SquareGrid{
 		if(!gridEnabled){
 			this.disableButton(button);
 		}
-		
+		/**
 		button.addEventListener('mouseover', function(e){
 			e.target.setAttribute('class', 'moused');
 			e.target.style['background-color'] = "#FF0000";
@@ -339,8 +342,9 @@ class SquareGrid{
 			e.target.setAttribute('class', 'unmoused');
 			e.target.style['background-color'] = "#FFFFFF";
 			e.target.style.border = "2px solid grey";
-
+		
 		});
+		**/
 		button.addEventListener('click', function(e){
 			//alert(gridVals);
 			var clickData = {trialData: trialData, action: 'click', value: gridVals[e.target.id], targetID: e.target.id, userGenerated: e.isTrusted};
