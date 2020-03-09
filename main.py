@@ -70,9 +70,10 @@ def render_trial(trial_num, pid):
 	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Continue\' to continue.';
 	next_instructions = 'Select one of your predictions to waive. \n\n Click \'Next\' to continue.';
 	gridvals, enabled_buttons, clicked_buttons = get_trial();
-	print(gridvals);
-	print(enabled_buttons);
-	print(clicked_buttons);
+	background = '';
+	with open(url_for('static', filename='txt/traininstructions.txt')[1:], 'r') as f:
+		for line in f:
+			background += line;
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [
@@ -89,7 +90,8 @@ def render_trial(trial_num, pid):
 		trial_type = 'trial', 
 		pid = pid,
 		instructions = instructions,
-		next_instructions = next_instructions);
+		next_instructions = next_instructions,
+		background = background);
 
 @app.route('/<int:pid>/trialbegin')
 def render_trialbegin(pid):
@@ -112,9 +114,11 @@ def render_train(trial_num, pid):
 	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Check\' to continue.';
 	next_instructions = 'Here are the actual values of the boxes you filled in. \n\nClick \'Next\' to continue.';
 	gridvals, enabled_buttons, clicked_buttons = get_trial();
-	print(type(gridvals["0,3"]));
-	print(type(enabled_buttons[0][0]));
-	print(type(clicked_buttons[0]));
+
+	background = '';
+	with open(url_for('static', filename='txt/maininstructions.txt')[1:], 'r') as f:
+		for line in f:
+			background += line;
 
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
@@ -132,7 +136,8 @@ def render_train(trial_num, pid):
 		trial_type = 'train',
 		pid = pid,
 		instructions = instructions,
-		next_instructions = next_instructions);
+		next_instructions = next_instructions,
+		background = background);
 """
 @app.route('/postmethod', methods = ['POST'])
 def get_post_javascript_data():
