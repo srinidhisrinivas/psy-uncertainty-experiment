@@ -94,7 +94,10 @@ class SquareGrid{
 	}
 	changeTextColorByID(idx, idy, color){
 		var div = document.getElementById('div'+''+idx+","+idy);
-		div.style.color = color;
+		div.style['border'] = "3px solid grey";
+		//div.style.color = color;
+		//div.style['font-size'] = 24+'pt';
+		div.style['font-weight'] = 700;
 	}
 	enableSelectionByID(idx, idy, targetSelections, button){
 		var input = document.getElementById('input'+''+idx+","+idy);
