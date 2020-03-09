@@ -328,7 +328,7 @@ class SquareGrid{
 		if(!gridEnabled){
 			this.disableButton(button);
 		}
-		
+		/**
 		button.addEventListener('mouseover', function(e){
 			e.target.setAttribute('class', 'moused');
 			e.target.style['background-color'] = "#FF0000";
@@ -339,8 +339,9 @@ class SquareGrid{
 			e.target.setAttribute('class', 'unmoused');
 			e.target.style['background-color'] = "#FFFFFF";
 			e.target.style.border = "2px solid grey";
-
+		
 		});
+		**/
 		button.addEventListener('click', function(e){
 			//alert(gridVals);
 			var clickData = {trialData: trialData, action: 'click', value: gridVals[e.target.id], targetID: e.target.id, userGenerated: e.isTrusted};
