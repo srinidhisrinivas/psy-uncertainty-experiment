@@ -17,9 +17,6 @@
 		<div id="header">
 			<div id="headerText" onselectstart='return false;'> {{ title_text }} #{{ trial_num }} </div>
 		</div>
-		{#<div id='speech-bubble'>
-		<div id="instructionText" onselectstart='return false;'> {{ instructions }} </div>
-		</div> #}
 		
 		<div id="content">
 		<div id="gridlayer" onselectstart = "return false;">
@@ -31,10 +28,10 @@
 		</div>
 			<div id='right-sidebar'>
 				<div id="instructionTitle"> Instructions </div>
-				<div id="instructionText"> placeholder text </div>
+				<div id="instructionText"> {{ instructions }} </div>
 			</div>
 		<div id="buttonbox">
-		<div id="binstruction"> placeholder text </div>
+		<div id="binstruction">  </div>
 			<div id="cwrapper">
 			<button disabled=true id="continueButton"> {% if trial_type == 'train' %} Check {% else %} Continue {% endif %}</button> 
 			</div>

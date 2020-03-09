@@ -27,7 +27,8 @@ function onWindowLoad(){
 		grid.enableButtonInputByID(enabledButtons[i][0], enabledButtons[i][1])
 	}
 	for(var i = 0; i<clickedButtons.length; i++){
-		grid.clickButtonByID(clickedButtons[i][0], clickedButtons[i][1])
+		grid.changeTextColorByID(clickedButtons[i][0], clickedButtons[i][1], "#002366");
+		grid.clickButtonByID(clickedButtons[i][0], clickedButtons[i][1]);
 	}
 	var continueButton = document.getElementById('continueButton');
 	if(trialType === 'train' && trialNum === 1){
@@ -41,14 +42,13 @@ function onWindowLoad(){
 		var nextButton = document.getElementById('nextButton');
 		nextButton.addEventListener('click', function(e){
 			var selectedIdx = "0,0";
-
 			for(var i=0; i<enabledButtons.length; i++){
-				idx = enabledButtons[i][0]+','+ enabledButtons[i][1];
+				var idx = enabledButtons[i][0]+','+ enabledButtons[i][1];
 				if(grid.inputsSelected[idx] === 1){
 					selectedIdx = idx;
 				}
 			}
-			var inputData = {trialData: trialData, action: 'select', value: document.getElementById('input'+idx).value, targetID: idx, userGenerated: true};
+			var inputData = {trialData: trialData, action: 'select', value: document.getElementById('div'+selectedIdx).innerText, targetID: idx, userGenerated: true};
 			$.post("/postmethod", {
 				javascript_data: JSON.stringify(inputData)
 			});
@@ -58,16 +58,21 @@ function onWindowLoad(){
 		var button = e.target;
 		button.disabled = true;
 		var nextButton = document.getElementById('nextButton');
+		if(trialType === 'train'){
+			grid.clickAllButtons();
+		}
 		for(var i = 0; i<enabledButtons.length; i++){
 			
 			grid.reportInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 			if(trialType === 'train'){
 				//grid.clickButtonByID(enabledButtons[i][0], enabledButtons[i][1]);
+				grid.hideInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 				grid.lockInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 				grid.giveFeedback(enabledButtons[i][0], enabledButtons[i][1], gridVals[enabledButtons[i][0] + "," + enabledButtons[i][1]]);
 			} else {
 				grid.lockInputByID(enabledButtons[i][0], enabledButtons[i][1]);
 				grid.enableSelectionByID(enabledButtons[i][0], enabledButtons[i][1], 1, nextButton)
+				document.getElementById('binstruction').innerText = 'Select ONE estimate to waive.'
 			}
 			
 		}

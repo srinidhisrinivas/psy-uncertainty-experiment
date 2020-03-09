@@ -1,0 +1,8 @@
+You finished training! You are now ready to estimate some unknown terrains!
+
+For each region, enter your estimate for the height of the terrain in the empty spaces as before.
+Click 'Continue' in the bottom right once you are sure of your estimates to lock in your answers. 
+
+CAUTION: You are being scored on your performance! However, the company will allow you to waive one
+of your estimates so that it doesn't affect your score. After your answers are locked in, select
+ONE of your answers to waive and click 'Next' to move on to the next region!

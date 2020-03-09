@@ -1,52 +1,72 @@
 html, body{
 	background-color: #FFF9D0;
+	user-select: none;
+	overflow: hidden;
+
+}
+body{
+	position: relative;
+}
+div#wrapper{
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 0.5fr 2fr 0.5fr;
+	grid-template-areas: "title" "instruction" "startDiv";
+	height: 100vh;
+	
+}
+div#title{
+	grid-area: title;
+	display: table;
+	text-align: center;
+	/*background-color: blue;*/
+	height: 100%;
 }
 div#titleText{
-	position: fixed;
 	font-family: "Cambria";
 	font-weight: 500;
 	font-size: 34pt;
-	left: 50%;
-	text-align: left;
-	top: 10%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	
+	display: table-cell;
+	vertical-align: middle;
 }
 
+div#instruction{
+	grid-area: instruction;
+	display: table;
+	height: 100%;
+	/*background-color: orange;*/
+	text-align: center;
+}
 div#instructionText{
-	position: fixed;
 	font-family: "Cambria";
 	font-weight: 300;
 	font-size: 18pt;
-	left: 50%;
-	text-align: left;
-	top: 25%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+	/*background-color: green;*/
+	display: table-cell;
+	vertical-align: middle;
+	white-space: pre-wrap;
+	margin: 0px auto;
 	
 }
 div#startDiv{
-	position: fixed;
+	grid-area: startDiv;
 	font-family: "Cambria";
 	font-weight: 500;
 	font-size: 34pt;
-	left: 50%;
-	text-align: left;
-	top: 90%;
-	width: 200px;
-	height: 60px;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
+	text-align: center;
+	/*background-color: yellow;*/
+	vertical-align: middle;
+	display: inline-block;
 	
 }
 
 #startButton{
-	width: 100%;
-	height: 100%;
+	width: 200px;
+	height: 60px;
 	background-color: #AF0000;
 	color: white;
 	font-family: "Consolas";
+	margin: 0px auto;
 }
 #startButton:hover{
 	background-color: #800000;
