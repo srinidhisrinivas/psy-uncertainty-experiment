@@ -35,14 +35,13 @@ function onWindowLoad(){
 		var nextButton = document.getElementById('nextButton');
 		nextButton.addEventListener('click', function(e){
 			var selectedIdx = "0,0";
-
 			for(var i=0; i<enabledButtons.length; i++){
-				idx = enabledButtons[i][0]+','+ enabledButtons[i][1];
+				var idx = enabledButtons[i][0]+','+ enabledButtons[i][1];
 				if(grid.inputsSelected[idx] === 1){
 					selectedIdx = idx;
 				}
 			}
-			var inputData = {trialData: trialData, action: 'select', value: document.getElementById('input'+idx).value, targetID: idx, userGenerated: true};
+			var inputData = {trialData: trialData, action: 'select', value: document.getElementById('div'+selectedIdx).innerText, targetID: idx, userGenerated: true};
 			$.post("/postmethod", {
 				javascript_data: JSON.stringify(inputData)
 			});

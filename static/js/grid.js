@@ -96,16 +96,54 @@ class SquareGrid{
 		var input = document.getElementById('input'+''+idx+","+idy);
 		this.enableSelection(input, targetSelections, button);
 	}
+	selectInputByID(id_, grid){
+		var inpId = 'input' + id_;
+		var divId = 'div' + id_;
+		var input = document.getElementById(inpId);
+		var div = document.getElementById(divId);
+		
+		var enabledInputs = Object.keys(grid.inputsSelected);
+		for(var i = 0; i < enabledInputs.length; i++){
+			grid.deselectInputByID(enabledInputs[i], grid);
+		}
+		div.style.border = '3px solid #66ff00';
+		div.style.background = '#66ff00';
+		div.style.color = '#66ff00';
+		//input.style['font-size'] = 24+'pt';
+		grid.inputsSelected[id_] = 1;
+	}
+	deselectInputByID(id_, grid){
+		var inpId = 'input' + id_;
+		var divId = 'div' + id_;
+		var input = document.getElementById(inpId);
+		var div = document.getElementById(divId);
+		var enabledInputs = Object.keys(grid.inputsSelected);
+
+		div.style.border = '3px solid black';
+		div.style.background = div.getAttribute('data-color');
+		div.style.color = 'black';
+		//input.style['font-size'] = 18+'pt';
+
+
+		grid.inputsSelected[id_] = 0;
+	}
 	enableSelection(input, targetSelections, button){
 		var inputsSelected = this.inputsSelected;
+		var selector = this.selectInputByID;
+		var deselector = this.deselectInputByID;
+		var grid = this;
 		var id_ = input.id.substring(input.id.search('[0-9]'));
+		var div = document.getElementById('div'+id_);
+		div.innerText = input.value;
+		input.value = '';
+		
 		input.addEventListener('click', function(e){
-			inputsSelected[id_] = 1 - inputsSelected[id_];
 			if(inputsSelected[id_] === 1){
-				input.style.border = '3px solid #66ff00';
+				deselector(id_, grid);
 			} else {
-				input.style.border = '2px solid black';
+				selector(id_, grid);
 			}
+
 			function getKeyByValue(object, value) {
 			  return Object.keys(object).find(key => object[key] === value);
 			}
@@ -113,7 +151,7 @@ class SquareGrid{
 			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) === targetSelections){
 				button.disabled = false;
 				var selectedidx = getKeyByValue(inputsSelected, 1);
-				var selectedval = document.getElementById("input"+selectedidx).value;
+				var selectedval = document.getElementById("div"+selectedidx).innerText;
 				document.getElementById('binstruction').innerText = "You are about to waive estimate " + selectedval + ". Click \'Next\' to continue."; 
 			} else {
 				button.disabled = true;
@@ -163,9 +201,11 @@ class SquareGrid{
 	}
 
 	enableButtonInput(button){
-		button.hidden = true;
+		button.style.visibility = "hidden";
+		this.clickButton(button);
 		var buttonRect = button.getBoundingClientRect();
 		var inp = document.createElement('input');
+		var div = document.getElementById('div'+button.id);
 		inp.id = 'input'+button.id;
 		inp.type = 'number';
 		inp.min = '0';
@@ -177,14 +217,17 @@ class SquareGrid{
 		inp.style.outline = 'none';
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
-		var inpWidth = buttonWidth - 4;
-		var inpHeight = buttonHeight - 6;
+		var inpWidth = buttonWidth;
+		var inpHeight = buttonHeight;
 		
 		inp.style.width = inpWidth + 'px';
 		inp.style.height = inpHeight + 'px';
 
 		inp.style.background = 'transparent';
-		inp.style.border = '3px solid black';
+		inp.style.border = 'none';
+		div.style.border = '3px solid black';
+		div.style['background-color'] = '#FFFF9E'
+		div.innerText = "";
 
 		inp.style['font-family'] = "Bahnschrift";
 
@@ -206,7 +249,7 @@ class SquareGrid{
 				
 				var color = redColorMap.getColor(fRatio).rgb();
 				//alert(color);
-				
+				div.setAttribute('data-color', color);
 				div.style['background-color'] = color;
 			}
 		}
@@ -320,6 +363,8 @@ class SquareGrid{
 				div.style['box-sizing'] = "border-box";
 				div.style.border = "2px solid grey";
 				div.style['background-color'] = color;
+				div.setAttribute('data-color', color);
+
 			}
 			colorDiv(div, maxVal);
 		
