@@ -186,7 +186,11 @@ canvas#myCanvas{
 	font-family: 'Bahnschrift';
 	font-size: 16pt;
 	border: 2px solid black;
+	position: relative;
+	/*border-radius: 10px 10px 10px 0px;*/
+	border-radius: 4px;
 }
+
 
 div#buttonDiv{
 	

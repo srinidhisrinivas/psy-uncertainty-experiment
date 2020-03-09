@@ -47,7 +47,7 @@ def index():
 			instructions += line;
 
 	return render_template('layouts/index.html',
-		page_title = 'Experiment Name',
+		page_title = 'I haven\'t yet thought of an experiment name, but it would go here.',
 		body_text = instructions,
 		button_dest = '/%d/train/1'%(pid),
 		button_text = 'Begin Training'
@@ -70,6 +70,9 @@ def render_trial(trial_num, pid):
 	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Continue\' to continue.';
 	next_instructions = 'Select one of your predictions to waive. \n\n Click \'Next\' to continue.';
 	gridvals, enabled_buttons, clicked_buttons = get_trial();
+	print(gridvals);
+	print(enabled_buttons);
+	print(clicked_buttons);
 	return render_template('layouts/grid.html',
 		trial_num = int(trial_num), 
 		static_scripts = [

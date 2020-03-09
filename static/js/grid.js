@@ -92,24 +92,77 @@ class SquareGrid{
 		input.readOnly = true;
 		
 	}
+	changeTextColorByID(idx, idy, color){
+		var div = document.getElementById('div'+''+idx+","+idy);
+		div.style['border'] = "3px solid grey";
+		//div.style.color = color;
+		//div.style['font-size'] = 24+'pt';
+		div.style['font-weight'] = 700;
+	}
 	enableSelectionByID(idx, idy, targetSelections, button){
 		var input = document.getElementById('input'+''+idx+","+idy);
 		this.enableSelection(input, targetSelections, button);
 	}
+	selectInputByID(id_, grid){
+		var inpId = 'input' + id_;
+		var divId = 'div' + id_;
+		var input = document.getElementById(inpId);
+		var div = document.getElementById(divId);
+		
+		var enabledInputs = Object.keys(grid.inputsSelected);
+		for(var i = 0; i < enabledInputs.length; i++){
+			grid.deselectInputByID(enabledInputs[i], grid);
+		}
+		div.style.border = '3px solid #66ff00';
+		div.style.background = '#66ff00';
+		div.style.color = '#66ff00';
+		//input.style['font-size'] = 24+'pt';
+		grid.inputsSelected[id_] = 1;
+	}
+	deselectInputByID(id_, grid){
+		var inpId = 'input' + id_;
+		var divId = 'div' + id_;
+		var input = document.getElementById(inpId);
+		var div = document.getElementById(divId);
+		var enabledInputs = Object.keys(grid.inputsSelected);
+
+		div.style.border = '3px solid black';
+		div.style.background = div.getAttribute('data-color');
+		div.style.color = 'black';
+		//input.style['font-size'] = 18+'pt';
+
+
+		grid.inputsSelected[id_] = 0;
+	}
 	enableSelection(input, targetSelections, button){
 		var inputsSelected = this.inputsSelected;
+		var selector = this.selectInputByID;
+		var deselector = this.deselectInputByID;
+		var grid = this;
 		var id_ = input.id.substring(input.id.search('[0-9]'));
+		var div = document.getElementById('div'+id_);
+		div.innerText = input.value;
+		input.value = '';
+		
 		input.addEventListener('click', function(e){
-			inputsSelected[id_] = 1 - inputsSelected[id_];
 			if(inputsSelected[id_] === 1){
-				input.style.border = '3px solid #66ff00';
+				deselector(id_, grid);
 			} else {
-				input.style.border = '2px solid black';
+				selector(id_, grid);
 			}
+
+			function getKeyByValue(object, value) {
+			  return Object.keys(object).find(key => object[key] === value);
+			}
+
 			if(Object.values(inputsSelected).reduce(function(acc, val){ return acc + val; }, 0) === targetSelections){
 				button.disabled = false;
+				var selectedidx = getKeyByValue(inputsSelected, 1);
+				var selectedval = document.getElementById("div"+selectedidx).innerText;
+				document.getElementById('binstruction').innerText = "You are about to waive estimate " + selectedval + ". Click \'Next\' to continue."; 
 			} else {
 				button.disabled = true;
+				document.getElementById('binstruction').innerText = "Select ONE estimate to waive."
 			}
 		});
 	}
@@ -127,14 +180,16 @@ class SquareGrid{
 		p.class = 'feedbackBox';
 		p.id = 'feedback'+id_;
 		var input = document.getElementById('input'+id_);
+		var div = document.getElementById('div'+id_);
 		var button = document.getElementById(id_);
 		var body = document.getElementById('gridlayer');
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonLeft = parseFloat(button.style.left.substring(0,button.style.left.indexOf('p')));
-		p.innerText = 'Correct value: '+trueVal;
-		p.style.left = buttonLeft + buttonWidth + 'px';
+		p.innerText = input.value;
+		p.style.left = (buttonLeft + buttonWidth - 15) + 'px';
 
-		p.style.top = button.style.top;
+		var buttonTop = parseFloat(button.style.top.substring(0,button.style.top.indexOf('p')));
+		p.style.top = (buttonTop - 15) + 'px';
 		p.style.position = 'fixed';
 		p.style.border = '2px solid black';
 		p.style['background-color'] = 'white';
@@ -143,14 +198,22 @@ class SquareGrid{
 		p.style.opacity = 0.85;
 		p.style.margin = '2px';
 		p.style.padding = '2px';
+		p.style.width = '20px';
+		p.style['border-radius'] = '10px 10px 10px 0px';
+
+		div.style.border = '3px solid black';
+
+		
 
 		body.appendChild(p); 
 	}
 
 	enableButtonInput(button){
-		button.hidden = true;
+		button.style.visibility = "hidden";
+		this.clickButton(button);
 		var buttonRect = button.getBoundingClientRect();
 		var inp = document.createElement('input');
+		var div = document.getElementById('div'+button.id);
 		inp.id = 'input'+button.id;
 		inp.type = 'number';
 		inp.min = '0';
@@ -162,14 +225,17 @@ class SquareGrid{
 		inp.style.outline = 'none';
 		var buttonWidth = parseFloat(button.style.width.substring(0,button.style.width.indexOf('p')));
 		var buttonHeight = parseFloat(button.style.height.substring(0,button.style.height.indexOf('p')));
-		var inpWidth = buttonWidth - 4;
-		var inpHeight = buttonHeight - 6;
+		var inpWidth = buttonWidth;
+		var inpHeight = buttonHeight;
 		
 		inp.style.width = inpWidth + 'px';
 		inp.style.height = inpHeight + 'px';
 
 		inp.style.background = 'transparent';
-		inp.style.border = '2px solid black';
+		inp.style.border = 'none';
+		div.style.border = '3px solid black';
+		div.style['background-color'] = '#FFFF9E'
+		div.innerText = "";
 
 		inp.style['font-family'] = "Bahnschrift";
 
@@ -189,9 +255,9 @@ class SquareGrid{
 				var val = parseFloat(currentVal);
 				var fRatio = (maxVal - val) / maxVal;
 				
-				var color = rygbColorMap.getColor(fRatio).rgb();
+				var color = redColorMap.getColor(fRatio).rgb();
 				//alert(color);
-				
+				div.setAttribute('data-color', color);
 				div.style['background-color'] = color;
 			}
 		}
@@ -218,16 +284,26 @@ class SquareGrid{
 			} else {
 				inputsValid[idx] = 0;
 			}
-
+			
 			var vals = Object.values(inputsValid);
 			if(vals.every(function(val) { return val === 1; })){
 				document.getElementById('continueButton').disabled = false;
+				
+
 			} else {
 				document.getElementById('continueButton').disabled = true;
+				
 			}
 			colorDiv(div, e.target.value, maxVal);
 		});
 
+	}
+	clickAllButtons(){
+		for(var i = 0; i < this.numCells; i++){
+			for(var j = 0; j < this.numCells; j++){
+				this.clickButtonByID(i,j);
+			}
+		}
 	}
 	createButton(gridL, gridT, idx, idy, step, gridVals, maxVal, gridEnabled, trialData){
 
@@ -290,11 +366,13 @@ class SquareGrid{
 				div.innerText = val;
 				var fRatio = (maxVal - val) / maxVal;
 				//alert(fRatio);
-				var color = rygbColorMap.getColor(fRatio).rgb();
+				var color = redColorMap.getColor(fRatio).rgb();
 				//alert(color);
 				div.style['box-sizing'] = "border-box";
 				div.style.border = "2px solid grey";
 				div.style['background-color'] = color;
+				div.setAttribute('data-color', color);
+
 			}
 			colorDiv(div, maxVal);
 		
