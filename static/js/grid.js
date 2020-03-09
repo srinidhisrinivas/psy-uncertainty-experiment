@@ -92,6 +92,10 @@ class SquareGrid{
 		input.readOnly = true;
 		
 	}
+	changeTextColorByID(idx, idy, color){
+		var div = document.getElementById('div'+''+idx+","+idy);
+		div.style.color = color;
+	}
 	enableSelectionByID(idx, idy, targetSelections, button){
 		var input = document.getElementById('input'+''+idx+","+idy);
 		this.enableSelection(input, targetSelections, button);
@@ -192,6 +196,7 @@ class SquareGrid{
 		p.style.margin = '2px';
 		p.style.padding = '2px';
 		p.style.width = '20px';
+		p.style['border-radius'] = '10px 10px 10px 0px';
 
 		div.style.border = '3px solid black';
 

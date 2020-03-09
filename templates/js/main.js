@@ -27,7 +27,7 @@ function onWindowLoad(){
 		grid.enableButtonInputByID(enabledButtons[i][0], enabledButtons[i][1])
 	}
 	for(var i = 0; i<clickedButtons.length; i++){
-		{# grid.changeTextColorByID(clickedButtons[i][0], clickedButtons[i][1]) #}
+		grid.changeTextColorByID(clickedButtons[i][0], clickedButtons[i][1], "#002366");
 		grid.clickButtonByID(clickedButtons[i][0], clickedButtons[i][1]);
 	}
 	var continueButton = document.getElementById('continueButton');
