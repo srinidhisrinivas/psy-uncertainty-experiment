@@ -19,7 +19,9 @@ function onWindowLoad(){
  	var trialNum = {{ trial_num }};
  	var trialType = {{ trial_type|tojson }};
  	var pid = {{ pid }};
+ 	var sampleno = {{ sampleno }};
  	var trialData = {
+ 		sample_no: sampleno,
  		start_time: trialStartTime.toString(),
  		type: trialType,
  		num: trialNum,
@@ -78,11 +80,13 @@ function onWindowLoad(){
 					selectedIdx = idx;
 				}
 			}
+			trialData['end_time'] = Date.now().toString();
+
 			var inputData = {trialData: trialData, action: 'select', value: document.getElementById('div'+selectedIdx).innerText, targetID: idx, userGenerated: true};
 			$.post("/postmethod", {
 				javascript_data: JSON.stringify(inputData)
 			});
-		})
+		});
 	}
 
 	// When the inputs are complete, give feedback in training condition or 
@@ -112,8 +116,16 @@ function onWindowLoad(){
 		
 		if(trialType === 'train') {
 			nextButton.disabled = false;
+			// Send post to signify end of trial
+			trialData['end_time'] = Date.now().toString();
+			var inputData = {trialData: trialData, action: 'end'};
+			$.post("/postmethod", {
+				javascript_data: JSON.stringify(inputData)
+			});
 		}
 		document.getElementById('instructionText').innerText = {{ next_instructions|tojson }};
+
+		
 	}); 
 	// Get the modal
 	var modal = document.getElementById("myModal");
