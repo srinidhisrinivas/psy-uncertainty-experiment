@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
+
 import json
 import gpytorch
 from gpytorch.mlls.variational_elbo import VariationalELBO
@@ -8,12 +9,14 @@ from gpytorch.models import AbstractVariationalGP
 from gpytorch.variational import CholeskyVariationalDistribution
 from gpytorch.variational import VariationalStrategy
 
+
 #torch.manual_seed(4);
 
 class ExactGPModel(gpytorch.models.ExactGP):
     def __init__(self, train_x, train_y, likelihood, lengthscale):
         super(ExactGPModel, self).__init__(train_x, train_y, likelihood)
         self.mean_module = gpytorch.means.ConstantMean()
+
         rbf = gpytorch.kernels.RBFKernel();
         rbf._set_lengthscale(lengthscale);
         self.covar_module = gpytorch.kernels.ScaleKernel(rbf);
@@ -24,12 +27,14 @@ class ExactGPModel(gpytorch.models.ExactGP):
         covar_x = self.covar_module(x)
         return gpytorch.distributions.MultivariateNormal(mean_x, covar_x)
 
+
 lengthscale = torch.tensor([20.0]);
 # initialize likelihood and model
 likelihood = gpytorch.likelihoods.GaussianLikelihood()
 model = ExactGPModel(None, None, likelihood, lengthscale)
 
 bounds = (0,100);
+
 n = 8
 grid = torch.zeros(n ** 2, 2)
 axpoints = torch.linspace(bounds[0], bounds[1], n)
@@ -42,6 +47,7 @@ mean = post_f.mean;
 var = post_f.variance;
 
 sample = post_f.sample();
+
 
 min_ = sample.min();
 max_ = sample.max();

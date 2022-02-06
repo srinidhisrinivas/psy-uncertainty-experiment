@@ -1,5 +1,13 @@
+ 
+/**
 
-//grid width and height
+This class contains all the functionality of the grid with the buttons and the underlying
+surface. This communicates mostly with `main.js` but also sends HTML POST requests to the
+back-end when certain actions are taken on the tiles in the grid.
+
+**/
+
+
 class SquareGrid{
 	constructor(canvas, h, numCells, p, trialData, inputEnabledButtons){
 		if(h===undefined){
@@ -348,11 +356,14 @@ class SquareGrid{
 		button.addEventListener('click', function(e){
 			//alert(gridVals);
 			var clickData = {trialData: trialData, action: 'click', value: gridVals[e.target.id], targetID: e.target.id, userGenerated: e.isTrusted};
-			$.post("/postmethod", {
-				javascript_data: JSON.stringify(clickData)
-			});
+			if(clickData.userGenerated){
+				$.post("/postmethod", {
+					javascript_data: JSON.stringify(clickData)
+				});
+			}
+				
+			
 			e.target.style.visibility = "hidden";
-
 			var div = document.getElementById("div"+idx+","+idy);
 			
 			if(trialData['type'] === 'trial' && clickData.realClick){

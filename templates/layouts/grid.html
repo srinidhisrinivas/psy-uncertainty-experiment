@@ -1,5 +1,5 @@
 {% extends "layouts/base.html" %}
-{% block head %}
+{% block head %} 
 	
 	
 	{% for script in static_scripts %}
@@ -40,6 +40,14 @@
 			<div id="iwrapper">
 			<button id="instButton" onclick = "alert(instructions)"> Instructions </button> </div>
 		</div>
+		<div id="myModal" class="modal">
+
+		  <!-- Modal content -->
+		  <div id="modal-content">
+		    <span id="close">&times;</span>
+		    <div id="headerText"> Background </div>
+		    <p> {{ background }}</p>
+		  </div>
 	</div>
 
 {% endblock %}
