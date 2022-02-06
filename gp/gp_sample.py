@@ -1,3 +1,20 @@
+"""
+
+This class is used to create the underlying smooth surfaces (terrains) for the 
+experiment. This is done by taking a random sample from a 2d-function prior with
+0 mean, having a Radial Basis Kernel with a given lengthscale to control for the 
+variation of the terrain.
+
+In addition, it selects which of the tiles on the grid would be revealed
+to the subject, and based on those, trains the Gaussian process with those 
+revealed values. Then, it finds the value of the variance at all of the locations,
+to see which positions of the terrain the trained Gaussian process (which knows
+nothing about the underlying surface except for those tiles revealed to it) has 
+the most uncertainty about.
+
+This uses the gpytorch module.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
@@ -14,6 +31,7 @@ RANDOM_STATE=np.random.randint(200);
 RANDOM_STATE=9;
 torch.manual_seed(RANDOM_STATE);
 
+# Create the GP Model as an exact GP
 class ExactGPModel(gpytorch.models.ExactGP):
     def __init__(self, train_x, train_y, likelihood, lengthscale):
         super(ExactGPModel, self).__init__(train_x, train_y, likelihood)
@@ -28,49 +46,42 @@ class ExactGPModel(gpytorch.models.ExactGP):
         covar_x = self.covar_module(x)
         return gpytorch.distributions.MultivariateNormal(mean_x, covar_x)
 
+# Initialze the lengthscale
+
 lengthscale = torch.tensor([40.0]);
-# initialize likelihood and model
+# Initialize likelihood and model
 likelihood = gpytorch.likelihoods.GaussianLikelihood()
 prior_model = ExactGPModel(None, None, likelihood, lengthscale)
 
+# Create a grid to sample the surface at even intervals
 bounds = (0,100);
 n = 8
 grid = torch.zeros(n ** 2, 2)
 axpoints = torch.linspace(bounds[0], bounds[1], n)
-
 grid[:, 0].copy_(axpoints.repeat(n))
 grid[:, 1].copy_(axpoints.unsqueeze(1).repeat(1, n).view(-1))
 
 prior_model.eval()
 likelihood.eval();
 
+# Sample a function from the zero mean GP Prior
 with torch.no_grad():
     post_f = prior_model(grid);
     mean = post_f.mean;
     var = post_f.variance;
     sample = post_f.sample();
 
+# Pick a number of points at random that are to be revealed
 num_revealed = 4;
 perm = torch.randperm(sample.size(0));
 revealed_idx = perm[:num_revealed];
 train_y = sample[revealed_idx];
 train_x = grid[revealed_idx];
-"""
-print(sample);
-print(perm);
-print(train_x);
-print(train_y);
 
-cmap = plt.get_cmap('jet');
-pcm = plt.pcolormesh(axpoints.numpy(), axpoints.numpy(), sample.reshape(n,n).detach().numpy(), cmap=cmap);
-plt.scatter(train_x.numpy()[:,0], train_x.numpy()[:,1], marker='x', color='black');
-plt.title('Sample');
-#train_x = grid;
-#train_y = sample;
-"""
+# Train the zero prior GP model on these points
 trained_model = ExactGPModel(train_x, train_y, likelihood, lengthscale);
-# Find optimal model hyperparameters
 
+# Find optimal model hyperparameters
 training_iter = 100;
 trained_model.train()
 likelihood.train()
@@ -102,6 +113,8 @@ for i in range(training_iter):
 trained_model.eval();
 likelihood.eval();
 
+# Get the posterior of the GP, which contains the variance (uncertainty)
+#   information at each point on the grid
 post_f = likelihood(trained_model(grid));
 mean = post_f.mean;
 var = post_f.variance;
@@ -136,6 +149,8 @@ def scalar_to_2dindex(idx, n):
 	idx2 = (idx % n).item();
 	return (idx1, idx2);
 
+
+# Scale values and convert all necessary values to JSON format
 var = var.reshape(n,n);
 sample = sample.reshape(n,n);
 sample = scale_to_range(sample, 0, 99);
@@ -148,12 +163,13 @@ json_dict['uncertainty_variance'] = uncertainty_variance;
 json_dict['gridvals'] = sample.tolist();
 json_dict['variances'] = var.tolist();
 
+# Write JSON to file
 with open('../valdicts/sample{}.json'.format(RANDOM_STATE), 'w') as f_out:
     f_out.write(json.dumps(json_dict));
 
-pee
 
 
+"""
 def tensor_to_dict(tensor):
     dict_ = {};
     size_ = tensor.shape;
@@ -173,3 +189,4 @@ cmap = plt.get_cmap('jet');
 
 pcm = plt.pcolormesh(axpoints.numpy(), axpoints.numpy(), sample.reshape(n,n).numpy(), cmap=cmap);
 plt.show();
+"""

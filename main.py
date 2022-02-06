@@ -111,7 +111,7 @@ def render_train(trial_num, pid):
 	if int(trial_num) > NUM_TRAIN:
 		return redirect('/%d/trialbegin'%(pid));
 
-	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Check\' to continue.';
+	instructions = 'Enter your predictions for the height of the terrain in the empty locations. \n\nClick \'Check\' to continue.';
 	next_instructions = 'Here is the actual terrain, along with your estimates for the \
 						terrain height at those locations, shown in the bubble. \n\nClick \'Next\' to continue.';
 
@@ -175,7 +175,7 @@ def render_trial(trial_num, pid):
 	# 	end screen (see route: "End")
 	if int(trial_num) > NUM_TRIAL:
 		return redirect('/%d/end'%(pid));
-	instructions = 'Enter your predictions for the values in the empty locations. \n\nClick \'Continue\' to continue.';
+	instructions = 'Enter your predictions for the height of the terrain in the empty locations. \n\nClick \'Continue\' to continue.';
 	next_instructions = 'Select one of your predictions to waive. \n\n Click \'Next\' to continue.';
 
 	# Generate a random trial
